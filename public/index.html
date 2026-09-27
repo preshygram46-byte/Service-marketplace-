@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Handled | Provider Dashboard</title>
+        <meta name="description"
+            content="Handled provider dashboard for managing services, requests, and earnings." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet" />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <nav class="dev-switcher" aria-label="Screen preview switcher">
+            <button class="dev-tab active" data-screen="landing">1 · Landing</button>
+            <button class="dev-tab" data-screen="service">2 · Service Detail</button>
+            <button class="dev-tab" data-screen="bookings">3 · Customer Bookings</button>
+            <button class="dev-tab" data-screen="provider">4 · Provider Dashboard</button>
+            <button class="dev-tab" data-screen="admin">5 · Admin Panel</button>
+        </nav>
+
+        <!-- Blank screens for team integration -->
+        <section id="screen-landing" class="screen"></section>
+        <section id="screen-service" class="screen"></section>
+        <section id="screen-bookings" class="screen"></section>
+
+        <!-- Provider Dashboard Screen (Your Workspace) -->
+        <section id="screen-provider" class="screen">
+            <div class="dashboard-layout">
+                <aside class="sidebar">
+                    <div class="logo"><span class="dot"></span>Handled</div>
+                    <nav class="sidebar-nav">
+                        <a href="#" class="sidebar-link active" data-view="dashboard">Dashboard</a>
+                        <a href="#" class="sidebar-link" data-view="services">My services</a>
+                        <a href="#" class="sidebar-link" data-view="requests">Requests</a>
+                        <a href="#" class="sidebar-link" data-view="reviews">Reviews</a>
+                        <a href="#" class="sidebar-link" data-view="profile">Profile</a>
+                    </nav>
+                    <div class="sidebar-footer">
+                        <span class="muted">Signed in as</span>
+                        <strong>Adaeze Okafor</strong>
+                    </div>
+                </aside>
+                <main class="dashboard-main">
+                    <div class="dashboard-topbar">
+                        <div>
+                            <p class="eyebrow">Good morning, Adaeze</p>
+                            <h1 id="dashboardMainTitle">Provider Dashboard</h1>
+                        </div>
+                        <div class="avatar avatar-pill">AO</div>
+                    </div>
+
+                    <!-- Stat Cards -->
+                    <div class="stat-cards" id="providerStatsContainer">
+                        <div class="stat-card">
+                            <span class="muted">Active services</span>
+                            <strong id="statActiveServices">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span class="muted">Pending requests</span>
+                            <strong id="statPendingRequests">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span class="muted">Completed jobs</span>
+                            <strong id="statCompletedJobs">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span class="muted">Overall rating</span>
+                            <strong id="statAverageRating">0 / 5.0</strong>
+                        </div>
+                    </div>
+
+                    <!-- Main Dynamic Content Container -->
+                    <div id="dashboardDynamicContent">
+                        <!-- Full-Width Incoming Requests Panel -->
+                        <section class="dashboard-panel requests-panel full-width-panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <span class="section-kicker">Action needed</span>
+                                    <h2>Incoming requests</h2>
+                                </div>
+                                <span class="request-count" id="requestCount">0 open</span>
+                            </div>
+                            <div class="request-list" id="incomingRequestsBody"></div>
+                        </section>
+
+                        <!-- Services Storefront Section -->
+                        <div class="section-heading" style="margin-top: 2rem;">
+                            <div>
+                                <span class="section-kicker">Your storefront</span>
+                               <h2>Active services</h2>
+                            </div>
+                            <button class="btn btn-primary" id="addServiceBtn">+ Add service</button>
+                        </div>
+                        <div class="service-management-list" id="myServicesBody"></div>
+                    </div>
+                </main>
+            </div>
+        </section>
+
+        <!-- Blank admin screen -->
+        <section id="screen-admin" class="screen"></section>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <script src="js/data.js"></script>
+        <script src="js/script.js"></script>
+    </body>
+</html>
