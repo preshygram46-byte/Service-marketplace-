@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capstone Project</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+  <div id="header">
+    <button onclick="ShowPage(`LandingPage`), head_select(this)" id="H_btn" class="header_but">Landing</button>
+    <button onclick="ShowPage(`ServicePage`), head_select(this)" class="header_but">Service Detail</button>
+    <button onclick="ShowPage(`CostumerPage`), head_select(this)" class="header_but">Costumer Bookings</button>
+    <button onclick="ShowPage(`ProviderPage`), head_select(this)" class="header_but">Dashboard</button>
+    <button onclick="ShowPage(`MyServicePage`), head_select(this)" class="header_but">My Service</button>
+    <button onclick="ShowPage(`BookPage`), head_select(this)" class="header_but">Service offers</button>
+  </div>
+  <div id="LandingPage">
+        <!--for top menu-->
+  <div class="Top_menu">
+    <b style="padding:5px; margin:10px;">Handled</b>
+    <button class="Top_but2">Browse services</button>
+    <button class="Top_but2">Become a Provider</button>
+    <button class="Top_but2">How it works</button>
+    <div style="position:absolute; right:0%; top:5%;">
+      <button style="background-color:#000013c7; border:0.2px solid; color:white; border-radius:10px;">login</button><br>
+      <button style="border-radius:10px; background-color:#161641c7; color:white; border:0.2px solid; margin-left:5px; margin-right:5px;">sign up</button>
+    </div>
+  </div>
+    <p>
+      <small style="color:#e85609c7;">Lagos' directory of trusted local help</small>
+      <br><br>
+      <b style="font-size:25px; color:white;">Find someone good,</b>
+      <b style="color:#fb762fc7;">not just someone fast</b>
+    </p>
+    <p style="color:white;">
+      browse verified electricians,cleaners tutors and more<br>
+      --see real rating compare prices, and book in a few taps
+    </p>
+    <form class="SearchBar" action="/search" method="get">
+      <input type="search" name="HomeSearch" placeholder="What do you need help with? e.g plumber, tutor...">
+      <button type="submit">Submit</button>
+      </form>
+          <!--add images for buttons-->
+      <div style="display:flex; color:white;">
+        <div style="padding:5px;">
+          <p style="font-size:15px;">1,240+</p>
+          <small>active providers</small>
+        </div>
+        <div style="padding:5px;">
+          <p style="font-size:15px;">18</p>
+          <small>service categories</small>
+        </div>
+        <div style="padding:5px;">
+          <p style="font-size:15px;">4.7</p>
+          <small>average rating</small>
+        </div>
+      </div>
+      <br>
+          <!--The Categories-->
+        <h3 style="color:white;font-famiy:Playfair Display;">BROWSE BY CATEGORIES</h3>
+      <div style="display:flex; overflow-x:auto;">
+        <div class="browse_list">
+          <img src="">
+          <p>Plumbing</p>
+          <small>86 providers</small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p>Electricians</p>
+          <small>112 providers</small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p>Cleaning</p>
+          <small>204 providers</small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p>Tutor</p>
+          <small>97 providers</small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p>Bueaty</p>
+          <small>104 providers</small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p>Capenter</p>
+          <small>64 providers</small>
+        </div>
+        <div class="browse_lit">
+          <img src="">
+          <p></p>
+          <small></small>
+        </div>
+      </div>
+      <h3 style="color:white;">TOP RATED THIS WEEK</h3>
+      <!--Top rated-->
+      <div>
+        <div style="display:flex; overflow-x:auto;">
+        <div class="browse_list">
+          <img src="">
+          <p></p>
+          <small></small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p></p>
+          <small></small>
+        </div>
+        <div class="browse_list">
+          <img src="">
+          <p></p>
+          <small></small>
+        </div>
+      </div>
+      <footer style="display:flex; background-color:#000013c7; padding:5px;">
+        <div class="FootNote">
+          <h3 style="color:#b27d05;">01</h3>
+          <h2>Find a provider</h2>
+          <p>search by categories or prices.</p>
+        </div>
+        <div class="FootNote">
+          <h3 style="color:#b27d05;">02</h3>
+          <h2>Send a request</h2>
+          <p>Tell them what you need and when they accept or decline.</p>
+        </div>
+        <div class="FootNote">
+          <h3 style="color:#b27d05;">03</h3>
+          <h2>Get it done then review</h2>
+          <p>Track status in your Dashboard and rate once complete.</p>
+        </div>
+      </footer>
+  </div>
+  </div>
+  <div id="ServicePage">
+    <div style="padding-left:10px;" class="Top_menu">
+      <h3 style="padding:5px; margin:10px;">Handled</h3>
+      <button class="Top_but"> Rate your fovoured services</button>
+      <div style="position:absolute;left:0px;"><img <!--src=""></div>
+    </div>
+      <div>
+        <small>Browse / Home Cleaning / Deep Clean Service</small>
+        <!--Show the service with div-->
+        <div></div>
+        <p style="color:red;">Note: Making a new booking will automatically cancel your last</p>
+        <div style="display:flex;"></div>
+      </div>
+  </div>
+  <div id="CostumerPage">
+    <!--menu-->
+    <div style="padding-left:10px;" class="Top_menu">
+      <h3 style="padding:5px; margin:10px;">Handled</h3>
+      <button class="Top_but">Save books and <br> return to your current srevice</button>
+      <div style="position:absolute;left:0px;"><img <src=""></div>
+    </div><hr>
+    <div style="color:white; padding:10px; background-color:#00001335;">
+      <h1 style="margin:5px;padding:0px;">My Bookings</h1>
+      <small style="margin:5px;padding:0px;">Track request sent to providers</small>
+    </div>
+    <div style="display:flex; color:white;">
+      <button class="Btn_org">All</button>
+      <button class="Btn_org">Pending</button>
+      <button class="Btn_org">accepted</button>
+      <button class="Btn_org">completed</button>
+    </div>
+    <div id="Book_list">
+      <div class="/Book_notify/"></div>
+    </div>
+    <div>
+      <!--<button onclick="addbook()">press</button>-->
+    </div>
+  </div>
+  <div id="ProviderPage">
+    <div style="padding-left:10px;" class="Top_menu">
+      <h3 style="padding:5px; margin:10px;">Handled</h3>
+      <button class="Top_but">Browse service</button>
+      <button class="Top_but">My bookings</button>
+      <div style="position:absolute;left:0px;"><img src=""></div>
+    </div>
+  </div>
+  <!--former admin-->
+  <div id="MyServicePage">
+    <div style="padding-left:10px;" class="Top_menu">
+      <h3 style="padding:5px; margin:10px;">Handled</h3>
+      <button class="Top_but">Services you provide</button>
+      <div style="position:absolute;left:0px;"><img src=""></div>
+    </div>
+    <div id="serve_list">
+      <button id="addServe" onclick="add_serve()">Add service</button>
+      <input id="serve_input" type="text" placeholder="insert name of service">
+    </div>
+  </div>
+  <div id="BookPage">
+    <div style="padding-left:10px;" class="Top_menu">
+      <h3 style="padding:5px; margin:10px;">Handled</h3>
+      <button class="Top_but">Services Avalaible</button>
+      <div style="position:absolute;left:0px;"><img src=""></div>
+    </div>
+    <div>
+      <button onclick="addbook(this)" class="serv_but2">Electrician</button>
+      <button onclick="addbook(this)" class="serv_but2">Artist</button>
+      <button onclick="addbook(this)" class="serv_but2">Singer</button>
+      <button onclick="addbook(this)" class="serv_but2">Tutor</button>
+      <button onclick="addbook(this)" class="serv_but2">MC</button>
+      <button onclick="addbook(this)" class="serv_but2">Photographer</button>
+      <button onclick="addbook(this)" class="serv_but2">Designer</button>
+      <button onclick="addbook(this)" class="serv_but2">DJ</button>
+    </div>
+  </div>
+
+  <script src="Script.js"></script>
+</body>
+</html>
