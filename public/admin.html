@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Handled</title>
+
+  <script>
+    (function() {
+      var token = localStorage.getItem('handled_token');
+      var user  = localStorage.getItem('handled_user');
+      if (!token || !user) { location.replace('login.html?next=admin.html'); return; }
+      try {
+        var role = JSON.parse(user).role;
+        if (role !== 'admin') location.replace('index.html');
+      } catch(e) { location.replace('index.html'); }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bedtime,wb_sunny,close,menu,search,arrow_forward,filter_list,location_on,person,calendar_today,schedule,payments,tag,check_circle,error,done_all,star,warning,shield,cleaning_services,bolt,plumbing,school,spa,handyman,search_off,inbox,table_rows,lock,gavel,verified_user,password,badge,admin_panel_settings,trending_up,manage_accounts,mail,phone,save,visibility,visibility_off,arrow_back,expand_more,chevron_right,person_remove,person_add" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+</head>
+<body>
+  <header class="main-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="images/favicon.svg" alt="Handled" class="logo-img">
+        <span>Handled</span>
+      </a>
+      <nav class="main-nav" aria-label="Primary"></nav>
+      <div class="nav-backdrop" aria-hidden="true"></div>
+      <div class="header-actions">
+        <div class="user-corner"></div>
+        <button type="button" class="theme-toggle" aria-label="Toggle theme"></button>
+        <button type="button" class="menu hide-desktop" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
+          <span class="hamburger-bars" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-page container">
+    <header class="admin-header">
+      <h1>Admin Panel</h1>
+      <p>Platform-wide oversight: bookings and request status across the marketplace.</p>
+    </header>
+
+    <section class="admin-stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Total Users</span>
+        <span class="stat-value" id="stat-users">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Providers</span>
+        <span class="stat-value" id="stat-providers">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total Bookings</span>
+        <span class="stat-value" id="stat-bookings">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Completed</span>
+        <span class="stat-value" id="stat-completed">—</span>
+      </div>
+    </section>
+
+    <section class="admin-section">
+      <h2>Platform Bookings by Status</h2>
+      <p id="bookings-status-summary" class="status-summary-text">Loading…</p>
+    </section>
+
+    <section id="users" class="admin-section">
+      <h2>Manage Users</h2>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Date Joined</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            
+          </tbody>
+        </table>
+        <div id="users-empty" class="empty-state hidden">
+          <span class="material-symbols-outlined empty-icon">table_rows</span>
+          <p class="empty-message">No records found</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-section">
+      <h2>All Bookings</h2>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Customer</th>
+              <th>Provider</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody">
+            
+          </tbody>
+        </table>
+        <div id="bookings-empty" class="empty-state hidden">
+          <span class="material-symbols-outlined empty-icon">table_rows</span>
+          <p class="empty-message">No records found</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="images/favicon.svg" alt="Handled" class="logo-img">
+            <span>Handled</span>
+          </a>
+          <p>A service marketplace for digital, creative, home, business, and personal work. Browse providers, request a service, and get it handled.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <ul>
+            <li><a href="services.html">All Services</a></li>
+            <li><a href="login.html?tab=register">Become a Provider</a></li>
+            <li><a href="bookings.html">My Bookings</a></li>
+            <li><a href="provider-dashboard.html">Provider Portal</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="safety.html">Safety Standards</a></li>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Handled Technologies Ltd. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="safety.html">Safety Standards</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/ui.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
