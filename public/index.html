@@ -15,10 +15,14 @@
     </head>
     <body>
         <nav class="dev-switcher" aria-label="Screen preview switcher">
-            <button class="dev-tab active" data-screen="landing">1 · Landing</button>
-            <button class="dev-tab" data-screen="service">2 · Service Detail</button>
-            <button class="dev-tab" data-screen="bookings">3 · Customer Bookings</button>
-            <button class="dev-tab" data-screen="provider">4 · Provider Dashboard</button>
+            <button class="dev-tab active" data-screen="landing">1 ·
+                Landing</button>
+            <button class="dev-tab" data-screen="service">2 · Service
+                Detail</button>
+            <button class="dev-tab" data-screen="bookings">3 · Customer
+                Bookings</button>
+            <button class="dev-tab" data-screen="provider">4 · Provider
+                Dashboard</button>
             <button class="dev-tab" data-screen="admin">5 · Admin Panel</button>
         </nav>
 
@@ -26,17 +30,21 @@
         <section id="screen-service" class="screen"></section>
         <section id="screen-bookings" class="screen"></section>
 
-        <!-- Provider Dashboard Screen -->
         <section id="screen-provider" class="screen">
             <div class="dashboard-layout">
                 <aside class="sidebar">
                     <div class="logo"><span class="dot"></span>Handled</div>
                     <nav class="sidebar-nav">
-                        <a href="#" class="sidebar-link active" data-view="dashboard">Dashboard</a>
-                        <a href="#" class="sidebar-link" data-view="services">My services</a>
-                        <a href="#" class="sidebar-link" data-view="requests">Requests</a>
-                        <a href="#" class="sidebar-link" data-view="reviews">Reviews</a>
-                        <a href="#" class="sidebar-link" data-view="profile">Profile</a>
+                        <a href="#" class="sidebar-link active"
+                            data-view="dashboard">Dashboard</a>
+                        <a href="#" class="sidebar-link" data-view="services">My
+                            services</a>
+                        <a href="#" class="sidebar-link"
+                            data-view="requests">Requests</a>
+                        <a href="#" class="sidebar-link"
+                            data-view="reviews">Reviews</a>
+                        <a href="#" class="sidebar-link"
+                            data-view="profile">Profile</a>
                     </nav>
                     <div class="sidebar-footer">
                         <span class="muted">Signed in as</span>
@@ -72,25 +80,32 @@
                     </div>
 
                     <div id="dashboardDynamicContent">
-                        <section class="dashboard-panel requests-panel full-width-panel">
+                        <section
+                            class="dashboard-panel requests-panel full-width-panel">
                             <div class="panel-heading">
                                 <div>
-                                    <span class="section-kicker">Action needed</span>
+                                    <span class="section-kicker">Action
+                                        needed</span>
                                     <h2>Incoming requests</h2>
                                 </div>
-                                <span class="request-count" id="requestCount">0 open</span>
+                                <span class="request-count" id="requestCount">0
+                                    open</span>
                             </div>
-                            <div class="request-list" id="incomingRequestsBody"></div>
+                            <div class="request-list"
+                                id="incomingRequestsBody"></div>
                         </section>
 
                         <div class="section-heading" style="margin-top: 2rem;">
                             <div>
-                                <span class="section-kicker">Your storefront</span>
-                               <h2>Active services</h2>
+                                <span class="section-kicker">Your
+                                    storefront</span>
+                                <h2>Active services</h2>
                             </div>
-                            <button class="btn btn-primary" id="addServiceBtn">+ Add service</button>
+                            <button class="btn btn-primary" id="addServiceBtn">+
+                                Add service</button>
                         </div>
-                        <div class="service-management-list" id="myServicesBody"></div>
+                        <div class="service-management-list"
+                            id="myServicesBody"></div>
                     </div>
                 </main>
             </div>

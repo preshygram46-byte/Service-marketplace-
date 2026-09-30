@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
+const serviceRoutes = require("./routes/serviceRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -15,10 +17,8 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
-
-// Add more routes here as they're built by teammates:
-// app.use("/api/services", serviceRoutes);
-// app.use("/api/bookings", bookingRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/bookings", bookingRoutes);
 // app.use("/api/reviews", reviewRoutes);
 // app.use("/api/admin", adminRoutes);
 
