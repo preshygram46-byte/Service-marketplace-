@@ -1,0 +1,178 @@
+body{
+  background-color: #302417;
+}
+
+#header{
+  background-color: #1d355cc7;
+  padding: 5px;
+  border-radius: 10px;
+  margin-top: -5px;
+}
+.header_but{
+  color: white;
+  background-color: #161641c7;
+  border-radius: 20px;
+  border: none;
+  padding: 2.5%;
+  margin: 5px;
+}
+
+#H_btn{
+  background-color: #f05a0ec7;
+}
+  
+.Top_menu{
+  display:flex;
+  background-color: #000013c7;
+  color:white;
+  margin-left:-20px;
+  margin-right:-20px;
+  margin-top:-10px;
+  position:relative;
+}
+.Top_but{
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size:15px;
+}
+.Top_but2{
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size:5px;
+}
+
+#LandingPage{
+  padding: 10px;
+  overflow: hidden;
+}
+#ServicePage{
+  overflow: hidden;
+  display: none;
+}
+#CostumerPage{
+  overflow: hidden;
+  display: none;
+}
+#ProviderPage{
+  overflow: hidden;
+  display: none;
+}
+/*#AboutPage{
+  overflow: hidden;
+  display: none;
+}*/
+#BookPage{
+  overflow: hidden;
+  display: none;
+}
+#MyServicePage{
+  overflow: hidden;
+  display: none;
+}
+
+.SearchBar{
+  display: flex;
+  width: max-content;
+}
+.SearchBar input {
+  flex: 1;/*means will take up remaining space*/
+  padding: 15px;
+  border: none;
+  background-color: #ac410ac7;
+}
+.SearchBar button {
+  color: white;
+  background-color: #161641c7;
+  border: none;
+  padding: 15px;
+}
+
+.Vertical_rule{
+  margin: 10px;
+  padding: 10px;
+  border-right: 2px solid #712b07c7;
+}
+
+.browse_list{
+  background-color: #000013c7;
+  width: max-content;
+  height: 150px;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 0px;
+  margin: 5px;
+  border-radius: 10px;
+  color: white;
+}
+
+.FootNote{
+  color: white;
+  padding: 2.5%;
+}
+
+.Btn_org{
+  background-color:transparent;
+  border:solid 0px;
+  padding: 5px;
+  color: white;
+}
+
+.serv_but{
+  background-color: #00002535;
+  color: white;
+  width: 125px;
+  height: 125px;
+  margin: 15px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.serv_but2{
+  background-color: #00002535;
+  color: white;
+  width: 125px;
+  height: 125px;
+  margin: 15px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.Book_notify{
+  background-color: #00002535;
+  color: white;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  min-width: 75%;
+  max-width: 1000px;
+}
+
+#addServe{
+  background-color: #5555ff35;
+  color: white;
+  position:absolute;
+  right: 0px;
+  width:50;
+  height:50;
+  margin: 10px;
+  border: 1px solid black;
+}
+
+#serve_input{
+  background-color: #2f2f8a35;
+  color: white;
+  position: fixed;
+  bottom: 0px;
+  left: 25%;
+  margin: 10px;
+  padding-left: 10px;
+  height: 10%;
+  width: 50%;
+  border-radius: 25px;
+  border: 1px solid black;
+}
