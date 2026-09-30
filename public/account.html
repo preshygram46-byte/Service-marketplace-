@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Handled</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bedtime,wb_sunny,close,menu,search,arrow_forward,filter_list,location_on,person,calendar_today,schedule,payments,tag,check_circle,error,done_all,star,warning,shield,cleaning_services,bolt,plumbing,school,spa,handyman,search_off,inbox,table_rows,lock,gavel,verified_user,password,badge,admin_panel_settings,trending_up,manage_accounts,mail,phone,save,visibility,visibility_off,arrow_back,expand_more,chevron_right,person_remove,person_add" />
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/account.css">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+</head>
+<body>
+  <header class="main-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="images/favicon.svg" alt="Handled" class="logo-img">
+        <span>Handled</span>
+      </a>
+      <nav class="main-nav" aria-label="Primary"></nav>
+      <div class="nav-backdrop" aria-hidden="true"></div>
+      <div class="header-actions">
+        <div class="user-corner"></div>
+        <button type="button" class="theme-toggle" aria-label="Toggle theme"></button>
+        <button type="button" class="menu hide-desktop" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
+          <span class="hamburger-bars" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="account-page container">
+    <div class="account-shell">
+      <section class="profile-header">
+        <div class="profile-avatar" id="profile-avatar">U</div>
+        <div class="profile-meta">
+          <h1 id="profile-name">Loading…</h1>
+          <p class="profile-email" id="profile-email">—</p>
+          <span class="badge badge-role" id="profile-role">Customer</span>
+        </div>
+      </section>
+
+      <section class="booking-summary-strip">
+        <div class="stat-card">
+          <span class="stat-label">Total Requests</span>
+          <span class="stat-value" id="stat-total">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Completed</span>
+          <span class="stat-value" id="stat-completed">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Pending</span>
+          <span class="stat-value" id="stat-pending">—</span>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2>Account Details</h2>
+        <p class="section-subtext">This is the information your provider or the platform stores about you. Contact support to update it.</p>
+        <dl class="profile-read-only">
+          <div class="profile-row">
+            <dt>Full Name</dt>
+            <dd id="profile-name-read">—</dd>
+          </div>
+          <div class="profile-row">
+            <dt>Email</dt>
+            <dd id="profile-email-read">—</dd>
+          </div>
+          <div class="profile-row">
+            <dt>Phone</dt>
+            <dd id="profile-phone">—</dd>
+          </div>
+          <div class="profile-row">
+            <dt>Member Since</dt>
+            <dd id="profile-joined">—</dd>
+          </div>
+          <div class="profile-row">
+            <dt>Role</dt>
+            <dd id="profile-role-read">—</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="images/favicon.svg" alt="Handled" class="logo-img">
+            <span>Handled</span>
+          </a>
+          <p>A service marketplace for digital, creative, home, business, and personal work. Browse providers, request a service, and get it handled.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <ul>
+            <li><a href="services.html">All Services</a></li>
+            <li><a href="login.html?tab=register">Become a Provider</a></li>
+            <li><a href="bookings.html">My Bookings</a></li>
+            <li><a href="provider-dashboard.html">Provider Portal</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="safety.html">Safety Standards</a></li>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Handled Technologies Ltd. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="safety.html">Safety Standards</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/ui.js"></script>
+  <script type="module" src="js/account.js"></script>
+</body>
+</html>

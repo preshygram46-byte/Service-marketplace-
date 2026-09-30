@@ -1,0 +1,67 @@
+
+
+.static-page {
+  padding: 48px 24px 80px;
+}
+
+.static-content {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.static-content .breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.static-content .breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.static-content h1 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+.static-content h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.static-content p {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.static-content .last-updated {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 32px;
+  font-style: italic;
+}
+
+.static-content .icon-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.static-content .icon-header .material-symbols-outlined {
+  font-size: 48px;
+  color: var(--accent);
+}
