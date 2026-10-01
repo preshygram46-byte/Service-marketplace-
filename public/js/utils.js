@@ -15,21 +15,21 @@ export function formatPrice(value) {
 }
 
 export function formatDate(iso) {
-  if (!iso) return '—';
+  if (!iso) return '-';
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return String(iso);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 export function formatTime(iso) {
-  if (!iso) return '—';
+  if (!iso) return '-';
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return String(iso);
   return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 }
 
 export function formatDateTime(iso) {
-  if (!iso) return '—';
+  if (!iso) return '-';
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return String(iso);
   return `${formatDate(iso)} · ${formatTime(iso)}`;
@@ -63,7 +63,7 @@ const STATUS_LABELS = {
 };
 
 export function statusLabel(status) {
-  return STATUS_LABELS[status] || (status ? status.charAt(0).toUpperCase() + status.slice(1) : '—');
+  return STATUS_LABELS[status] || (status ? status.charAt(0).toUpperCase() + status.slice(1) : '-');
 }
 
 export function escapeHtml(value) {

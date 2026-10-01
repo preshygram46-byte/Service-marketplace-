@@ -27,8 +27,8 @@ async function loadAdminData() {
 }
 
 function renderStats(users, bookings) {
-  document.getElementById('stat-users').textContent = users.length || '—';
-  document.getElementById('stat-providers').textContent = users.filter(u => u.role === 'provider').length || '—';
+  document.getElementById('stat-users').textContent = users.length || '-';
+  document.getElementById('stat-providers').textContent = users.filter(u => u.role === 'provider').length || '-';
   document.getElementById('stat-bookings').textContent = bookings.length;
   document.getElementById('stat-completed').textContent = bookings.filter(b => b.status === 'completed').length;
 }
@@ -54,8 +54,8 @@ function renderUsersTable(users) {
   empty.classList.add('hidden');
   tbody.innerHTML = users.map(u => `
     <tr>
-      <td>${escapeHtml(u.name || '—')}</td>
-      <td>${escapeHtml(u.email || '—')}</td>
+      <td>${escapeHtml(u.name || '-')}</td>
+      <td>${escapeHtml(u.email || '-')}</td>
       <td><span class="badge badge-role">${escapeHtml(u.role || 'customer')}</span></td>
       <td>${formatDate(u.joinedAt)}</td>
     </tr>
@@ -73,11 +73,11 @@ function renderBookingsTable(bookings) {
   empty.classList.add('hidden');
   tbody.innerHTML = bookings.map(b => `
     <tr>
-      <td>${escapeHtml(b.serviceTitle || b.serviceId || '—')}</td>
-      <td>${escapeHtml(b.customerName || '—')}</td>
-      <td>${escapeHtml(b.providerName || '—')}</td>
+      <td>${escapeHtml(b.serviceTitle || b.serviceId || '-')}</td>
+      <td>${escapeHtml(b.customerName || '-')}</td>
+      <td>${escapeHtml(b.providerName || '-')}</td>
       <td><span class="badge badge-${escapeHtml(b.status)}">${statusLabel(b.status)}</span></td>
-      <td>${b.requestedDate ? formatDate(b.requestedDate) : '—'}</td>
+      <td>${b.requestedDate ? formatDate(b.requestedDate) : '-'}</td>
     </tr>
   `).join('');
 }

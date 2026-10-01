@@ -51,7 +51,7 @@ async function loadRequests() {
     const status = statusLabel(b.status);
     const title = escapeHtml(b.serviceTitle || b.serviceId || 'Service request');
     const customer = b.customerName ? escapeHtml(b.customerName) : '';
-    const dateText = b.requestedDate ? formatDate(b.requestedDate) : '—';
+    const dateText = b.requestedDate ? formatDate(b.requestedDate) : '-';
     const timeText = b.requestedDate ? formatTime(b.requestedDate) : '';
     const priceText = b.price !== undefined && b.price !== null ? formatPrice(b.price) : '';
     const notes = b.notes ? escapeHtml(b.notes) : '';

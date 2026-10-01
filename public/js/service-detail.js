@@ -52,7 +52,7 @@ function showMissingService() {
   if (providerSpecialty) providerSpecialty.textContent = '';
   if (providerResponse) providerResponse.textContent = '';
   if (providerSkills) providerSkills.innerHTML = '';
-  [panelPrice, mobilePrice, summaryPrice].forEach(el => { if (el) el.textContent = '—'; });
+  [panelPrice, mobilePrice, summaryPrice].forEach(el => { if (el) el.textContent = '-'; });
   [panelUnit, mobileUnit, summaryUnit].forEach(el => { if (el) el.textContent = ''; });
   openBtns.forEach(btn => { if (btn) btn.disabled = true; });
 }
@@ -66,7 +66,7 @@ async function loadService() {
 
   try {
     currentService = await api.getServiceById(serviceId);
-    document.title = `${currentService.title || 'Service'} — Handled`;
+    document.title = `${currentService.title || 'Service'} - Handled`;
 
     detailTitle.textContent = currentService.title || 'Untitled service';
     detailDescription.textContent = currentService.description || '';
@@ -80,12 +80,12 @@ async function loadService() {
     const priceText = formatPrice(currentService.price);
     if (summaryTitle) summaryTitle.textContent = currentService.title || '';
     if (summaryProvider) summaryProvider.textContent = currentService.providerName || 'Provider';
-    if (summaryPrice) summaryPrice.textContent = priceText || '—';
+    if (summaryPrice) summaryPrice.textContent = priceText || '-';
     if (summaryUnit) summaryUnit.textContent = '';
 
-    if (panelPrice) panelPrice.textContent = priceText || '—';
+    if (panelPrice) panelPrice.textContent = priceText || '-';
     if (panelUnit) panelUnit.textContent = '';
-    if (mobilePrice) mobilePrice.textContent = priceText || '—';
+    if (mobilePrice) mobilePrice.textContent = priceText || '-';
     if (mobileUnit) mobileUnit.textContent = '';
 
     if (providerName) providerName.textContent = currentService.providerName || '';

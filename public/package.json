@@ -1,7 +1,7 @@
 {
   "name": "handled",
   "version": "1.0.0",
-  "description": "Handled — local services marketplace prototype",
+  "description": "Handled - local services marketplace prototype",
   "private": true,
   "scripts": {
     "check": "node scripts/check.js",
