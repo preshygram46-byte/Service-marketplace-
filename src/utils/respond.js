@@ -1,4 +1,3 @@
-// Helpers that enforce the agreed response shape: { success, message, data }
 function ok(res, status, message, data = {}) {
   return res.status(status).json({ success: true, message, data });
 }

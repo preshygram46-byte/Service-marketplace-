@@ -30,7 +30,8 @@ exports.createReview = async (req, res) => {
     }
 
     const existing = await Review.findOne({ bookingId });
-    if (existing) return fail(res, 409, "This booking has already been reviewed");
+    if (existing)
+      return fail(res, 409, "This booking has already been reviewed");
 
     const review = await Review.create({
       bookingId: booking._id,
@@ -43,7 +44,8 @@ exports.createReview = async (req, res) => {
 
     return ok(res, 201, "Review submitted successfully", review);
   } catch (error) {
-    if (error.code === 11000) return fail(res, 409, "This booking has already been reviewed");
+    if (error.code === 11000)
+      return fail(res, 409, "This booking has already been reviewed");
     return fail(res, 500, "Something went wrong");
   }
 };
@@ -54,7 +56,11 @@ exports.getReviews = async (req, res) => {
   try {
     const { serviceId, providerId } = req.query;
     if (!serviceId && !providerId) {
-      return fail(res, 400, "Provide serviceId or providerId as a query parameter");
+      return fail(
+        res,
+        400,
+        "Provide serviceId or providerId as a query parameter",
+      );
     }
 
     const filter = {};
@@ -73,10 +79,16 @@ exports.getReviews = async (req, res) => {
 
     const count = reviews.length;
     const averageRating = count
-      ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / count) * 10) / 10
+      ? Math.round(
+          (reviews.reduce((sum, r) => sum + r.rating, 0) / count) * 10,
+        ) / 10
       : 0;
 
-    return ok(res, 200, "Reviews retrieved successfully", { reviews, averageRating, count });
+    return ok(res, 200, "Reviews retrieved successfully", {
+      reviews,
+      averageRating,
+      count,
+    });
   } catch (error) {
     return fail(res, 500, "Something went wrong");
   }

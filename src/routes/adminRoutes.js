@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const requireAuth = require("../middleware/authMiddleware");
 const requireRole = require("../middleware/roleMiddleware");
-const { getUsers, updateUserRole, deleteUser, getStats } = require("../controllers/adminController");
+const {
+  getUsers,
+  updateUserRole,
+  deleteUser,
+  getStats,
+} = require("../controllers/adminController");
 
 router.use(requireAuth, requireRole("admin"));
 

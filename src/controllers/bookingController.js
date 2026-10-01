@@ -76,7 +76,7 @@ exports.createBooking = async (req, res) => {
 };
 
 // GET /api/bookings  (customer: own, provider: received, admin: all)
-// Optional filter: ?status=pending
+
 exports.getBookings = async (req, res) => {
   try {
     const filter = {};
@@ -90,7 +90,9 @@ exports.getBookings = async (req, res) => {
       filter.status = req.query.status;
     }
 
-    const bookings = await populateBooking(Booking.find(filter).sort({ createdAt: -1 }));
+    const bookings = await populateBooking(
+      Booking.find(filter).sort({ createdAt: -1 }),
+    );
     return ok(res, 200, "Bookings retrieved successfully", bookings);
   } catch (error) {
     return fail(res, 500, "Something went wrong");
@@ -104,7 +106,8 @@ exports.getBookingById = async (req, res) => {
 
     const booking = await populateBooking(Booking.findById(req.params.id));
     if (!booking) return fail(res, 404, "Booking not found");
-    if (!canAccess(req.user, booking)) return fail(res, 403, "Insufficient permission");
+    if (!canAccess(req.user, booking))
+      return fail(res, 403, "Insufficient permission");
 
     return ok(res, 200, "Booking retrieved successfully", booking);
   } catch (error) {
@@ -118,24 +121,36 @@ exports.updateBookingStatus = async (req, res) => {
     const { status } = req.body;
     if (!isId(req.params.id)) return fail(res, 400, "Invalid booking id");
     if (!BOOKING_STATUSES.includes(status)) {
-      return fail(res, 400, `status must be one of: ${BOOKING_STATUSES.join(", ")}`);
+      return fail(
+        res,
+        400,
+        `status must be one of: ${BOOKING_STATUSES.join(", ")}`,
+      );
     }
 
     const booking = await Booking.findById(req.params.id);
     if (!booking) return fail(res, 404, "Booking not found");
-    if (!canAccess(req.user, booking)) return fail(res, 403, "Insufficient permission");
+    if (!canAccess(req.user, booking))
+      return fail(res, 403, "Insufficient permission");
 
     const { role, id } = req.user;
 
     if (role !== "admin") {
       // A user acts in the role they hold on THIS booking
       const actingAs =
-        String(booking.providerId) === id ? "provider" :
-        String(booking.customerId) === id ? "customer" : null;
+        String(booking.providerId) === id
+          ? "provider"
+          : String(booking.customerId) === id
+            ? "customer"
+            : null;
 
       const allowed = (TRANSITIONS[actingAs] || {})[booking.status] || [];
       if (!allowed.includes(status)) {
-        return fail(res, 400, `Cannot change booking from '${booking.status}' to '${status}'`);
+        return fail(
+          res,
+          400,
+          `Cannot change booking from '${booking.status}' to '${status}'`,
+        );
       }
     }
 

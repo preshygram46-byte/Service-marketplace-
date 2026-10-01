@@ -13,7 +13,11 @@ app.use(express.json());
 
 // Health check
 app.get("/", (req, res) => {
-  res.json({ success: true, message: "Service Marketplace API is running", data: null });
+  res.json({
+    success: true,
+    message: "Service Marketplace API is running",
+    data: null,
+  });
 });
 
 // Routes
@@ -27,7 +31,9 @@ app.use("/api/admin", adminRoutes);
 
 // 404 handler for unmatched routes
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: "Route not found", data: null });
+  res
+    .status(404)
+    .json({ success: false, message: "Route not found", data: null });
 });
 
 // Global error handler (keep this last)
