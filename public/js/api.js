@@ -1,4 +1,4 @@
-const BASE_URL = window.HANDLED_API_BASE_URL || '';
+const BASE_URL = window.HANDLED_API_BASE_URL || 'http://localhost:5000';
 
 const TOKEN_KEY = 'handled_token';
 const USER_KEY = 'handled_user';
