@@ -10,7 +10,12 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "provider", "admin"],
       default: "customer",
     },
-    phone: { type: String, trim: true },
+    phone: {
+  type: String,
+  trim: true,
+  unique: true,
+  sparse: true,
+},
   },
   { timestamps: true }
 );
