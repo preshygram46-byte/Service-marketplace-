@@ -58,7 +58,11 @@ function renderGrid(services) {
 
   emptyState.classList.add('hidden');
   grid.innerHTML = services.map((s, index) => {
-    const categoryName = s.categoryId ? escapeHtml(s.categoryId) : '';
+    const categoryName = escapeHtml(
+  typeof s.categoryId === "object"
+    ? (s.categoryId?.name || "")
+    : (s.categoryId || "")
+);
     const priceText = formatPrice(s.price);
     const priceLine = priceText
       ? `<div class="card-price"><span class="starting-from-label">Starting from</span>${priceText}</div>`

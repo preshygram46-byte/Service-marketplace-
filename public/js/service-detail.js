@@ -70,8 +70,13 @@ async function loadService() {
 
     detailTitle.textContent = currentService.title || 'Untitled service';
     detailDescription.textContent = currentService.description || '';
-    breadcrumbCat.textContent = currentService.categoryId || 'Service';
-    if (detailCategoryBadge) detailCategoryBadge.textContent = currentService.categoryId || 'Service';
+    const categoryName =
+  typeof currentService.categoryId === "object"
+    ? (currentService.categoryId?.name || "Service")
+    : (currentService.categoryId || "Service");
+
+breadcrumbCat.textContent = categoryName;
+if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
     if (detailImg) {
       detailImg.src = currentService.image || 'images/header-visual.png';
       detailImg.alt = currentService.title || 'Service';
@@ -89,7 +94,7 @@ async function loadService() {
     if (mobileUnit) mobileUnit.textContent = '';
 
     if (providerName) providerName.textContent = currentService.providerName || '';
-    if (providerSpecialty) providerSpecialty.textContent = currentService.categoryId ? `${currentService.categoryId} Specialist` : '';
+   if (providerSpecialty) providerSpecialty.textContent = `${categoryName} Specialist`;
     if (providerResponse) providerResponse.textContent = '';
     if (providerAvatar) providerAvatar.alt = currentService.providerName || 'Provider';
     if (providerSkills) providerSkills.innerHTML = '';
