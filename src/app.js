@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+
 const authRoutes = require("./routes/authRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
@@ -10,7 +11,37 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  "http://127.0.0.1:5500",
+  "http://localhost:5500",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  methods: [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+  ],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+  ],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 // Health check
@@ -30,17 +61,16 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/categories", categoryRoutes);
 
-// Add more routes here as they're built by teammates:
-// app.use("/api/services", serviceRoutes);
-
-// 404 handler for unmatched routes
+// 404 handler
 app.use((req, res) => {
-  res
-    .status(404)
-    .json({ success: false, message: "Route not found", data: null });
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    data: null,
+  });
 });
 
-// Global error handler (keep this last)
+// Global error handler
 app.use(errorHandler);
 
 module.exports = app;
