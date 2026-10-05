@@ -32,10 +32,10 @@ async function request(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  let res;
+  let response;
 
   try {
-    res = await fetch(`${BASE_URL}${path}`, {
+    response = await fetch(`${BASE_URL}${path}`, {
       ...options,
       headers,
     });
@@ -47,16 +47,16 @@ async function request(path, options = {}) {
 
   let body = null;
   const contentType =
-    res.headers.get("content-type") || "";
+    response.headers.get("content-type") || "";
 
   if (contentType.includes("application/json")) {
-    body = await res.json().catch(() => null);
+    body = await response.json().catch(() => null);
   } else {
-    body = await res.text().catch(() => null);
+    body = await response.text().catch(() => null);
   }
 
   if (
-    res.status === 401 &&
+    response.status === 401 &&
     path !== "/api/auth/login"
   ) {
     api.logout({ silent: true });
@@ -64,10 +64,13 @@ async function request(path, options = {}) {
     return null;
   }
 
-  if (!res.ok || (body && body.success === false)) {
+  if (
+    !response.ok ||
+    (body && body.success === false)
+  ) {
     const message =
       (body && body.message) ||
-      `Request failed (${res.status})`;
+      `Request failed (${response.status})`;
 
     throw new Error(message);
   }
@@ -191,6 +194,20 @@ export const api = {
       : [];
   },
 
+  async createCategory({ name }) {
+    const data = await request(
+      "/api/categories",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+        }),
+      }
+    );
+
+    return normalizeId(data);
+  },
+
   async getServices({
     query = "",
     category = "",
@@ -205,10 +222,12 @@ export const api = {
       params.set("category", category);
     }
 
-    const qs = params.toString();
+    const queryString = params.toString();
 
     const data = await request(
-      `/api/services${qs ? `?${qs}` : ""}`
+      `/api/services${
+        queryString ? `?${queryString}` : ""
+      }`
     );
 
     return Array.isArray(data)
@@ -224,6 +243,28 @@ export const api = {
     return normalizeId(data);
   },
 
+  async createService({
+    title,
+    description,
+    price,
+    categoryId,
+  }) {
+    const data = await request(
+      "/api/services",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          title,
+          description,
+          price: Number(price),
+          categoryId,
+        }),
+      }
+    );
+
+    return normalizeId(data);
+  },
+
   async getBookings() {
     const data = await request(
       "/api/bookings"
@@ -231,20 +272,6 @@ export const api = {
 
     return Array.isArray(data)
       ? data.map(normalizeId)
-      : [];
-  },
-
-  async getAdminUsers() {
-    const data = await request(
-      "/api/admin/users"
-    );
-
-    const users = Array.isArray(data)
-      ? data
-      : data?.users;
-
-    return Array.isArray(users)
-      ? users.map(normalizeId)
       : [];
   },
 
@@ -289,5 +316,41 @@ export const api = {
       message: `Request ${status} successfully`,
       data: normalizeId(data),
     };
+  },
+
+  async getAdminUsers() {
+    const data = await request(
+      "/api/admin/users"
+    );
+
+    const users = Array.isArray(data)
+      ? data
+      : data?.users;
+
+    return Array.isArray(users)
+      ? users.map(normalizeId)
+      : [];
+  },
+
+  async createAdmin({
+    name,
+    email,
+    phone,
+    password,
+  }) {
+    const data = await request(
+      "/api/admin/users",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          password,
+        }),
+      }
+    );
+
+    return normalizeId(data);
   },
 };
