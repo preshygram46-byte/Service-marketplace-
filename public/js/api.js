@@ -17,6 +17,74 @@ function normalizeId(record) {
   };
 }
 
+function normalizeBooking(b) {
+  if (!b) return b;
+  const id = b._id ?? b.id;
+
+  const customerObj = typeof b.customerId === "object" && b.customerId !== null ? b.customerId : null;
+  const customerId = customerObj ? (customerObj._id ?? customerObj.id ?? String(b.customerId)) : (b.customerId ? String(b.customerId) : null);
+  const customerName = customerObj?.name ?? null;
+  const customerEmail = customerObj?.email ?? null;
+  const customerPhone = customerObj?.phone ?? null;
+
+  const providerObj = typeof b.providerId === "object" && b.providerId !== null ? b.providerId : null;
+  const providerId = providerObj ? (providerObj._id ?? providerObj.id ?? String(b.providerId)) : (b.providerId ? String(b.providerId) : null);
+  const providerName = providerObj?.name ?? null;
+  const providerEmail = providerObj?.email ?? null;
+  const providerPhone = providerObj?.phone ?? null;
+
+  const serviceObj = typeof b.serviceId === "object" && b.serviceId !== null ? b.serviceId : null;
+  const serviceId = serviceObj ? (serviceObj._id ?? serviceObj.id ?? String(b.serviceId)) : (b.serviceId ? String(b.serviceId) : null);
+  const serviceTitle = serviceObj?.title ?? null;
+  const price = serviceObj?.price ?? null;
+
+  const { _id, ...rest } = b;
+
+  return {
+    ...rest,
+    id,
+    customerId,
+    customerName,
+    customerEmail,
+    customerPhone,
+    providerId,
+    providerName,
+    providerEmail,
+    providerPhone,
+    serviceId,
+    serviceTitle,
+    price,
+  };
+}
+
+function normalizeService(s) {
+  if (!s) return s;
+  const id = s._id ?? s.id;
+
+  const catObj = typeof s.categoryId === "object" && s.categoryId !== null ? s.categoryId : null;
+  const categoryId = catObj ? (catObj._id ?? catObj.id ?? String(s.categoryId)) : (s.categoryId ? String(s.categoryId) : null);
+  const categoryName = catObj?.name ?? s.categoryName ?? null;
+  const categorySlug = catObj?.slug ?? s.categorySlug ?? null;
+
+  const provObj = typeof s.providerId === "object" && s.providerId !== null ? s.providerId : null;
+  const providerId = provObj ? (provObj._id ?? provObj.id ?? String(s.providerId)) : (s.providerId ? String(s.providerId) : null);
+  const providerName = provObj?.name ?? s.providerName ?? null;
+
+  const { _id, ...rest } = s;
+
+  return {
+    ...rest,
+    id,
+    categoryId,
+    categoryName,
+    categorySlug,
+    providerId,
+    providerName,
+    rating: s.rating ?? null,
+    image: s.image ?? null,
+  };
+}
+
 async function request(path, options = {}) {
   const headers = {
     ...(options.headers || {}),
@@ -216,7 +284,7 @@ export const api = {
     const params = new URLSearchParams();
 
     if (query) {
-      params.set("query", query);
+      params.set("q", query);
     }
 
     if (category) {
@@ -232,7 +300,7 @@ export const api = {
     );
 
     return Array.isArray(data)
-      ? data.map(normalizeId)
+      ? data.map(normalizeService)
       : [];
   },
 
@@ -241,7 +309,7 @@ export const api = {
       `/api/services/${encodeURIComponent(id)}`
     );
 
-    return normalizeId(data);
+    return normalizeService(data);
   },
 
   async createService({
@@ -263,7 +331,7 @@ export const api = {
       }
     );
 
-    return normalizeId(data);
+    return normalizeService(data);
   },
 
   async getBookings() {
@@ -272,7 +340,7 @@ export const api = {
     );
 
     return Array.isArray(data)
-      ? data.map(normalizeId)
+      ? data.map(normalizeBooking)
       : [];
   },
 
@@ -296,7 +364,7 @@ export const api = {
     return {
       message:
         "Service request submitted successfully",
-      data: normalizeId(data),
+      data: normalizeBooking(data),
     };
   },
 
@@ -315,7 +383,7 @@ export const api = {
 
     return {
       message: `Request ${status} successfully`,
-      data: normalizeId(data),
+      data: normalizeBooking(data),
     };
   },
 
