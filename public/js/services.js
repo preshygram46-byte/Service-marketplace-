@@ -58,11 +58,8 @@ function renderGrid(services) {
 
   emptyState.classList.add('hidden');
   grid.innerHTML = services.map((s, index) => {
-    const categoryName = escapeHtml(
-  typeof s.categoryId === "object"
-    ? (s.categoryId?.name || "")
-    : (s.categoryId || "")
-);
+    const categoryName = escapeHtml(s.categoryName || '');
+    const imgSrc = s.image || 'images/header-visual.png';
     const priceText = formatPrice(s.price);
     const priceLine = priceText
       ? `<div class="card-price"><span class="starting-from-label">Starting from</span>${priceText}</div>`
@@ -78,9 +75,7 @@ function renderGrid(services) {
     return `
     <article class="catalog-card ${featuredClass}">
       <div class="card-img-wrap">
-        <div class="card-img-placeholder">
-          <span class="material-symbols-outlined">${categoryIcon()}</span>
-        </div>
+        <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(s.title || 'Service')}" class="card-img">
         ${categoryName ? `<span class="card-category-badge">${categoryName}</span>` : ''}
       </div>
       <div class="card-content">

@@ -472,24 +472,21 @@ function renderBookingsTable(bookings) {
         <tr>
           <td>
             ${escapeHtml(
-              booking.serviceId?.title ||
-                booking.serviceTitle ||
+              booking.serviceTitle ||
                 "-"
             )}
           </td>
 
           <td>
             ${escapeHtml(
-              booking.customerId?.name ||
-                booking.customerName ||
+              booking.customerName ||
                 "-"
             )}
           </td>
 
           <td>
             ${escapeHtml(
-              booking.providerId?.name ||
-                booking.providerName ||
+              booking.providerName ||
                 "-"
             )}
           </td>

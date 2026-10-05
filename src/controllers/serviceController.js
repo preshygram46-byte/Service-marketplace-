@@ -5,6 +5,9 @@ const { ok, fail } = require("../utils/respond");
 
 const isId = (id) => mongoose.isValidObjectId(id);
 
+const escapeRegex = (text) =>
+  typeof text === "string" ? text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") : "";
+
 // GET /api/services
 exports.getServices = async (req, res) => {
   try {
@@ -12,9 +15,10 @@ exports.getServices = async (req, res) => {
     const { q, category, provider } = req.query;
 
     if (q) {
+      const escapedQ = escapeRegex(q);
       filter.$or = [
-        { title: { $regex: q, $options: "i" } },
-        { description: { $regex: q, $options: "i" } },
+        { title: { $regex: escapedQ, $options: "i" } },
+        { description: { $regex: escapedQ, $options: "i" } },
       ];
     }
 

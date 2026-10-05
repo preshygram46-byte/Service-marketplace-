@@ -98,12 +98,6 @@ function renderList() {
 
   stream.innerHTML = filtered
     .map((booking) => {
-      const service =
-        booking.serviceId &&
-        typeof booking.serviceId === "object"
-          ? booking.serviceId
-          : null;
-
       const status =
         booking.status || "pending";
 
@@ -117,28 +111,21 @@ function renderList() {
           ? formatTime(booking.requestedDate)
           : "";
 
-      const priceValue =
-        booking.price ?? service?.price;
-
       const priceText =
-        priceValue !== undefined &&
-        priceValue !== null
-          ? formatPrice(priceValue)
+        booking.price !== undefined &&
+        booking.price !== null
+          ? formatPrice(booking.price)
           : "";
 
       const title = escapeHtml(
-        service?.title ||
-          booking.serviceTitle ||
+        booking.serviceTitle ||
           "Service request"
       );
 
       const personName = canManageRequests
-        ? booking.customerId?.name ||
-          booking.customerName ||
+        ? booking.customerName ||
           "Customer"
-        : booking.providerId?.name ||
-          booking.providerName ||
-          service?.providerId?.name ||
+        : booking.providerName ||
           "Provider";
 
       const personLabel = canManageRequests

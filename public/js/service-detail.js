@@ -70,13 +70,10 @@ async function loadService() {
 
     detailTitle.textContent = currentService.title || 'Untitled service';
     detailDescription.textContent = currentService.description || '';
-    const categoryName =
-  typeof currentService.categoryId === "object"
-    ? (currentService.categoryId?.name || "Service")
-    : (currentService.categoryId || "Service");
+    const categoryName = currentService.categoryName || 'Service';
 
-breadcrumbCat.textContent = categoryName;
-if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
+    breadcrumbCat.textContent = categoryName;
+    if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
     if (detailImg) {
       detailImg.src = currentService.image || 'images/header-visual.png';
       detailImg.alt = currentService.title || 'Service';
@@ -93,11 +90,45 @@ if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
     if (mobilePrice) mobilePrice.textContent = priceText || '-';
     if (mobileUnit) mobileUnit.textContent = '';
 
-    if (providerName) providerName.textContent = currentService.providerName || '';
-   if (providerSpecialty) providerSpecialty.textContent = `${categoryName} Specialist`;
-    if (providerResponse) providerResponse.textContent = '';
-    if (providerAvatar) providerAvatar.alt = currentService.providerName || 'Provider';
-    if (providerSkills) providerSkills.innerHTML = '';
+    if (providerName) {
+      if (currentService.providerName) {
+        providerName.textContent = currentService.providerName;
+        providerName.style.display = '';
+      } else {
+        providerName.style.display = 'none';
+      }
+    }
+
+    if (providerSpecialty) {
+      if (categoryName) {
+        providerSpecialty.textContent = `${categoryName} Specialist`;
+        providerSpecialty.style.display = '';
+      } else {
+        providerSpecialty.style.display = 'none';
+      }
+    }
+
+    if (providerResponse) {
+      if (currentService.responseTime) {
+        providerResponse.textContent = currentService.responseTime;
+        providerResponse.style.display = '';
+      } else {
+        providerResponse.style.display = 'none';
+      }
+    }
+
+    if (providerAvatar) {
+      providerAvatar.alt = currentService.providerName || 'Provider';
+    }
+
+    if (providerSkills) {
+      if (currentService.skills && currentService.skills.length > 0) {
+        providerSkills.innerHTML = currentService.skills.map(skill => `<span>${escapeHtml(skill)}</span>`).join('');
+        providerSkills.style.display = '';
+      } else {
+        providerSkills.style.display = 'none';
+      }
+    }
   } catch (err) {
     showToast(err.message || 'Could not load service.', true);
     showMissingService();
