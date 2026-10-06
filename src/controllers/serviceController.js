@@ -5,14 +5,48 @@ const { ok, fail } = require("../utils/respond");
 
 const isId = (id) => mongoose.isValidObjectId(id);
 
+
 const escapeRegex = (text) =>
   typeof text === "string" ? text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&") : "";
+
+const parsePrice = (value) => {
+  if (
+    value === null ||
+    value === "" ||
+    typeof value === "boolean" ||
+    (typeof value !== "number" && typeof value !== "string")
+  ) {
+    return null;
+  }
+  const price = Number(value);
+  return Number.isFinite(price) && price >= 0 ? price : null;
+};
+
 
 // GET /api/services
 exports.getServices = async (req, res) => {
   try {
     const filter = {};
-    const { q, category, provider } = req.query;
+    const { q, category, provider, page, limit } = req.query;
+
+    const usePagination = page !== undefined || limit !== undefined;
+    const pageNumber = page === undefined ? 1 : Number(page);
+    const limitNumber = limit === undefined ? 20 : Number(limit);
+
+    if (
+      usePagination &&
+      (!Number.isInteger(pageNumber) ||
+        pageNumber < 1 ||
+        !Number.isInteger(limitNumber) ||
+        limitNumber < 1 ||
+        limitNumber > 100)
+    ) {
+      return fail(
+        res,
+        400,
+        "page must be at least 1 and limit must be between 1 and 100"
+      );
+    }
 
     if (q) {
       const escapedQ = escapeRegex(q);
@@ -38,14 +72,34 @@ exports.getServices = async (req, res) => {
       }
     }
 
-    if (provider && isId(provider)) {
+    if (provider) {
+      if (!isId(provider)) {
+        return fail(res, 400, "Invalid provider id");
+      }
       filter.providerId = provider;
     }
 
-    const services = await Service.find(filter)
+    const query = Service.find(filter)
       .populate("categoryId", "name slug")
-      .populate("providerId", "name email")
+      .populate("providerId", "name")
       .sort({ createdAt: -1 });
+
+    if (usePagination) {
+      query.skip((pageNumber - 1) * limitNumber).limit(limitNumber);
+    }
+
+    const [services, total] = await Promise.all([
+      query,
+      Service.countDocuments(filter),
+    ]);
+
+    if (usePagination) {
+      res.set({
+        "X-Total-Count": String(total),
+        "X-Page": String(pageNumber),
+        "X-Limit": String(limitNumber),
+      });
+    }
 
     return ok(res, 200, "Services retrieved successfully", services);
   } catch (error) {
@@ -62,7 +116,7 @@ exports.getServiceById = async (req, res) => {
 
     const service = await Service.findById(req.params.id)
       .populate("categoryId", "name slug")
-      .populate("providerId", "name email");
+      .populate("providerId", "name");
 
     if (!service) {
       return fail(res, 404, "Service not found");
@@ -91,22 +145,35 @@ exports.createService = async (req, res) => {
       return fail(res, 400, "Invalid categoryId");
     }
 
+    const normalizedTitle = typeof title === "string" ? title.trim() : "";
+    const normalizedDescription =
+      typeof description === "string" ? description.trim() : "";
+    const normalizedPrice = parsePrice(price);
+
+    if (!normalizedTitle || !normalizedDescription) {
+      return fail(res, 400, "title and description cannot be empty");
+    }
+
+    if (normalizedPrice === null) {
+      return fail(res, 400, "price must be a non-negative number");
+    }
+
     const category = await Category.findById(categoryId);
     if (!category) {
       return fail(res, 404, "Category not found");
     }
 
     const service = await Service.create({
-      title,
-      description,
-      price,
+      title: normalizedTitle,
+      description: normalizedDescription,
+      price: normalizedPrice,
       categoryId,
       providerId: req.user.id,
     });
 
     const populated = await Service.findById(service._id)
       .populate("categoryId", "name slug")
-      .populate("providerId", "name email");
+      .populate("providerId", "name");
 
     return ok(res, 201, "Service created successfully", populated);
   } catch (error) {
@@ -131,23 +198,48 @@ exports.updateService = async (req, res) => {
       return fail(res, 403, "Insufficient permission");
     }
 
-    const allowedFields = ["title", "description", "price", "categoryId"];
-
-    allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) {
-        service[field] = req.body[field];
+    if (req.body.title !== undefined) {
+      if (typeof req.body.title !== "string" || !req.body.title.trim()) {
+        return fail(res, 400, "title cannot be empty");
       }
-    });
+      service.title = req.body.title.trim();
+    }
 
-    if (service.categoryId && !isId(service.categoryId)) {
-      return fail(res, 400, "Invalid categoryId");
+    if (req.body.description !== undefined) {
+      if (
+        typeof req.body.description !== "string" ||
+        !req.body.description.trim()
+      ) {
+        return fail(res, 400, "description cannot be empty");
+      }
+      service.description = req.body.description.trim();
+    }
+
+    if (req.body.price !== undefined) {
+      const normalizedPrice = parsePrice(req.body.price);
+      if (normalizedPrice === null) {
+        return fail(res, 400, "price must be a non-negative number");
+      }
+      service.price = normalizedPrice;
+    }
+
+    if (req.body.categoryId !== undefined) {
+      if (!isId(req.body.categoryId)) {
+        return fail(res, 400, "Invalid categoryId");
+      }
+
+      const category = await Category.findById(req.body.categoryId);
+      if (!category) {
+        return fail(res, 404, "Category not found");
+      }
+      service.categoryId = req.body.categoryId;
     }
 
     await service.save();
 
     const populated = await Service.findById(service._id)
       .populate("categoryId", "name slug")
-      .populate("providerId", "name email");
+      .populate("providerId", "name");
 
     return ok(res, 200, "Service updated successfully", populated);
   } catch (error) {
