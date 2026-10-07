@@ -249,3 +249,25 @@
     grid-template-columns: 1fr;
   }
 }
+
+.admin-inline-input,
+.admin-role-select {
+  max-width: 220px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+}
+.admin-role-select { min-width: 120px; }
+.admin-service-thumb { width: 64px; height: 44px; object-fit: cover; border: 1px solid var(--border-color); border-radius: 4px; }
+.skeleton-row { height: 48px; min-width: 100%; background: var(--bg-surface); border-radius: 4px; }
+.admin-table td { vertical-align: middle; }
+.admin-table .status-text { white-space: normal; }
+
+@media (max-width: 600px) {
+  .admin-page { padding-inline: 16px; }
+  .admin-action-form { padding: 18px; }
+}

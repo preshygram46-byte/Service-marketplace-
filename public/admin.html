@@ -46,7 +46,7 @@
   >
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bedtime,wb_sunny,close,menu,search,arrow_forward,filter_list,location_on,person,calendar_today,schedule,payments,tag,check_circle,error,done_all,star,warning,shield,cleaning_services,bolt,plumbing,school,spa,handyman,search_off,inbox,table_rows,lock,gavel,verified_user,password,badge,admin_panel_settings,trending_up,manage_accounts,mail,phone,save,visibility,visibility_off,arrow_back,expand_more,chevron_right,person_remove,person_add"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=category,bedtime,wb_sunny,close,menu,search,arrow_forward,filter_list,location_on,person,calendar_today,schedule,payments,tag,check_circle,error,done_all,star,warning,shield,cleaning_services,bolt,plumbing,school,spa,handyman,search_off,inbox,table_rows,lock,gavel,verified_user,password,badge,admin_panel_settings,trending_up,manage_accounts,mail,phone,save,visibility,visibility_off,arrow_back,expand_more,chevron_right,person_remove,person_add"
   >
 
   <link rel="stylesheet" href="css/common.css">
@@ -362,6 +362,7 @@
               <th>Email</th>
               <th>Role</th>
               <th>Date Joined</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -377,6 +378,39 @@
           </span>
           <p class="empty-message">No records found</p>
         </div>
+      </div>
+    </section>
+
+    <section class="admin-section">
+      <h2>Manage Categories</h2>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Slug</th><th>Actions</th></tr></thead>
+          <tbody id="categories-tbody"></tbody>
+        </table>
+        <div id="categories-empty" class="empty-state hidden"><span class="material-symbols-outlined empty-icon">category</span><p class="empty-message">No categories found</p></div>
+      </div>
+    </section>
+
+    <section class="admin-section">
+      <h2>Manage Services</h2>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Service</th><th>Provider</th><th>Category</th><th>Price</th><th>Image</th><th>Actions</th></tr></thead>
+          <tbody id="services-tbody"></tbody>
+        </table>
+        <div id="services-empty" class="empty-state hidden"><span class="material-symbols-outlined empty-icon">category</span><p class="empty-message">No services found</p></div>
+      </div>
+    </section>
+
+    <section class="admin-section">
+      <h2>Review Moderation</h2>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Service</th><th>Customer</th><th>Rating</th><th>Comment</th><th>Actions</th></tr></thead>
+          <tbody id="reviews-tbody"></tbody>
+        </table>
+        <div id="reviews-empty" class="empty-state hidden"><span class="material-symbols-outlined empty-icon">star</span><p class="empty-message">No reviews found</p></div>
       </div>
     </section>
 
@@ -410,6 +444,26 @@
       </div>
     </section>
   </main>
+
+
+  <div id="edit-service-modal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Edit Service</h3>
+        <button type="button" class="btn-link edit-service-close">Close</button>
+      </div>
+      <form id="edit-service-form">
+        <input type="hidden" id="edit-service-id">
+        <div class="modal-body modal-body-stack">
+          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-title">Service title</label><input class="form-input" id="edit-service-title" required></div>
+          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-category">Category</label><select class="form-select" id="edit-service-category" required></select></div>
+          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-price">Starting price</label><input class="form-input" id="edit-service-price" type="number" min="0" step="0.01" required></div>
+          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-description">Description</label><textarea class="form-textarea" id="edit-service-description" rows="5" required></textarea></div>
+        </div>
+        <div class="modal-footer"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+      </form>
+    </div>
+  </div>
 
   <footer class="main-footer">
     <div class="container">
