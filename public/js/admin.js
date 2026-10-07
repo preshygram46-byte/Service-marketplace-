@@ -401,5 +401,56 @@ createServiceForm?.addEventListener('submit', async (event) => {
 });
 
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeEditService(); });
+  empty.classList.add("hidden");
+
+  tbody.innerHTML = bookings
+    .map(
+      (booking) => `
+        <tr>
+          <td>
+            ${escapeHtml(
+              booking.serviceTitle ||
+                "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              booking.customerName ||
+                "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHtml(
+              booking.providerName ||
+                "-"
+            )}
+          </td>
+
+          <td>
+            <span class="badge badge-${escapeHtml(
+              booking.status || "pending"
+            )}">
+              ${statusLabel(
+                booking.status || "pending"
+              )}
+            </span>
+          </td>
+
+          <td>
+            ${
+              booking.requestedDate
+                ? formatDate(
+                    booking.requestedDate
+                  )
+                : "-"
+            }
+          </td>
+        </tr>
+      `
+    )
+    .join("");
+}
 
 Promise.all([loadStats(), loadUsers(), loadCategories(), loadBookings(), loadServices()]).then(loadReviews);

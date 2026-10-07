@@ -53,6 +53,77 @@ function normalizeService(s) {
     providerName: provObj?.name ?? s.providerName ?? null,
     rating: s.rating ?? null,
     image: s.image ?? null,
+function normalizeBooking(b) {
+  if (!b) return b;
+  const id = b._id ?? b.id;
+
+  const customerObj = typeof b.customerId === "object" && b.customerId !== null ? b.customerId : null;
+  const customerId = customerObj ? (customerObj._id ?? customerObj.id ?? String(b.customerId)) : (b.customerId ? String(b.customerId) : null);
+  const customerName = customerObj?.name ?? null;
+  const customerEmail = customerObj?.email ?? null;
+  const customerPhone = customerObj?.phone ?? null;
+
+  const providerObj = typeof b.providerId === "object" && b.providerId !== null ? b.providerId : null;
+  const providerId = providerObj ? (providerObj._id ?? providerObj.id ?? String(b.providerId)) : (b.providerId ? String(b.providerId) : null);
+  const providerName = providerObj?.name ?? null;
+  const providerEmail = providerObj?.email ?? null;
+  const providerPhone = providerObj?.phone ?? null;
+
+  const serviceObj = typeof b.serviceId === "object" && b.serviceId !== null ? b.serviceId : null;
+  const serviceId = serviceObj ? (serviceObj._id ?? serviceObj.id ?? String(b.serviceId)) : (b.serviceId ? String(b.serviceId) : null);
+  const serviceTitle = serviceObj?.title ?? null;
+  const price = serviceObj?.price ?? null;
+
+  const { _id, ...rest } = b;
+
+  return {
+    ...rest,
+    id,
+    customerId,
+    customerName,
+    customerEmail,
+    customerPhone,
+    providerId,
+    providerName,
+    providerEmail,
+    providerPhone,
+    serviceId,
+    serviceTitle,
+    price,
+  };
+}
+
+function normalizeService(s) {
+  if (!s) return s;
+  const id = s._id ?? s.id;
+
+  const catObj = typeof s.categoryId === "object" && s.categoryId !== null ? s.categoryId : null;
+  const categoryId = catObj ? (catObj._id ?? catObj.id ?? String(s.categoryId)) : (s.categoryId ? String(s.categoryId) : null);
+  const categoryName = catObj?.name ?? s.categoryName ?? null;
+  const categorySlug = catObj?.slug ?? s.categorySlug ?? null;
+
+  const provObj = typeof s.providerId === "object" && s.providerId !== null ? s.providerId : null;
+  const providerId = provObj ? (provObj._id ?? provObj.id ?? String(s.providerId)) : (s.providerId ? String(s.providerId) : null);
+  const providerName = provObj?.name ?? s.providerName ?? null;
+
+  const { _id, ...rest } = s;
+
+  return {
+    ...rest,
+    id,
+    categoryId,
+    categoryName,
+    categorySlug,
+    providerId,
+    providerName,
+    rating: s.rating ?? null,
+    image: s.image ?? null,
+  };
+}
+
+async function request(path, options = {}) {
+  const headers = {
+    ...(options.headers || {}),
   };
 }
 
@@ -159,6 +230,15 @@ export const api = {
       body: JSON.stringify({ name }),
     }));
   },
+  async getServices({
+    query = "",
+    category = "",
+  } = {}) {
+    const params = new URLSearchParams();
+
+    if (query) {
+      params.set("q", query);
+    }
 
   async deleteCategory(id) {
     return request(`/api/categories/${encodeURIComponent(id)}`, { method: 'DELETE' });
@@ -184,6 +264,9 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ title, description, price: Number(price), categoryId }),
     }));
+    return Array.isArray(data)
+      ? data.map(normalizeService)
+      : [];
   },
 
   async updateService(id, { title, description, price, categoryId }) {
@@ -212,6 +295,29 @@ export const api = {
       averageRating: Number(data?.averageRating || 0),
       count: Number(data?.count || 0),
     };
+    return normalizeService(data);
+  },
+
+  async createService({
+    title,
+    description,
+    price,
+    categoryId,
+  }) {
+    const data = await request(
+      "/api/services",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          title,
+          description,
+          price: Number(price),
+          categoryId,
+        }),
+      }
+    );
+
+    return normalizeService(data);
   },
 
   async createReview({ bookingId, rating, comment }) {
@@ -223,6 +329,9 @@ export const api = {
 
   async deleteReview(id) {
     return request(`/api/reviews/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    return Array.isArray(data)
+      ? data.map(normalizeBooking)
+      : [];
   },
 
   async getBookings() {
@@ -241,6 +350,9 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ serviceId, requestedDate, notes }),
       })),
+      message:
+        "Service request submitted successfully",
+      data: normalizeBooking(data),
     };
   },
 
@@ -251,6 +363,7 @@ export const api = {
         method: 'PATCH',
         body: JSON.stringify({ status }),
       })),
+      data: normalizeBooking(data),
     };
   },
 

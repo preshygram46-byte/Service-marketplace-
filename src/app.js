@@ -10,6 +10,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
+app.disable("x-powered-by");
 
 const allowedOrigins = [
   "http://127.0.0.1:5500",
@@ -23,7 +24,9 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    return callback(new Error("Not allowed by CORS"));
+    const error = new Error("Not allowed by CORS");
+    error.status = 403;
+    return callback(error);
   },
   methods: [
     "GET",

@@ -52,6 +52,10 @@ exports.createBooking = async (req, res) => {
       return fail(res, 400, "requestedDate must be in the future");
     }
 
+    if (notes !== undefined && (typeof notes !== "string" || notes.length > 1000)) {
+      return fail(res, 400, "notes must be text with at most 1000 characters");
+    }
+
     const service = await Service.findById(serviceId);
     if (!service) {
       return fail(res, 404, "Service not found");

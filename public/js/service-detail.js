@@ -111,6 +111,11 @@ async function loadService() {
     breadcrumbCat.textContent = categoryName;
     if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
 
+    detailDescription.textContent = currentService.description || '';
+    const categoryName = currentService.categoryName || 'Service';
+
+    breadcrumbCat.textContent = categoryName;
+    if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
     if (detailImg) {
       detailImg.src = serviceImageUrl(currentService, 1200, 800);
       detailImg.alt = currentService.title || 'Service';
@@ -149,6 +154,53 @@ async function loadService() {
     }
 
     await loadReviews();
+    if (summaryPrice) summaryPrice.textContent = priceText || '-';
+    if (summaryUnit) summaryUnit.textContent = '';
+
+    if (panelPrice) panelPrice.textContent = priceText || '-';
+    if (panelUnit) panelUnit.textContent = '';
+    if (mobilePrice) mobilePrice.textContent = priceText || '-';
+    if (mobileUnit) mobileUnit.textContent = '';
+
+    if (providerName) {
+      if (currentService.providerName) {
+        providerName.textContent = currentService.providerName;
+        providerName.style.display = '';
+      } else {
+        providerName.style.display = 'none';
+      }
+    }
+
+    if (providerSpecialty) {
+      if (categoryName) {
+        providerSpecialty.textContent = `${categoryName} Specialist`;
+        providerSpecialty.style.display = '';
+      } else {
+        providerSpecialty.style.display = 'none';
+      }
+    }
+
+    if (providerResponse) {
+      if (currentService.responseTime) {
+        providerResponse.textContent = currentService.responseTime;
+        providerResponse.style.display = '';
+      } else {
+        providerResponse.style.display = 'none';
+      }
+    }
+
+    if (providerAvatar) {
+      providerAvatar.alt = currentService.providerName || 'Provider';
+    }
+
+    if (providerSkills) {
+      if (currentService.skills && currentService.skills.length > 0) {
+        providerSkills.innerHTML = currentService.skills.map(skill => `<span>${escapeHtml(skill)}</span>`).join('');
+        providerSkills.style.display = '';
+      } else {
+        providerSkills.style.display = 'none';
+      }
+    }
   } catch (err) {
     showToast(err.message || 'Could not load service.', true);
     showMissingService();

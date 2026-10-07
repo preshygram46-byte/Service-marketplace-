@@ -20,6 +20,13 @@ exports.createReview = async (req, res) => {
       return fail(res, 400, "rating must be a whole number from 1 to 5");
     }
 
+    if (
+      comment !== undefined &&
+      (typeof comment !== "string" || comment.length > 1000)
+    ) {
+      return fail(res, 400, "comment must be text with at most 1000 characters");
+    }
+
     const booking = await Booking.findById(bookingId);
     if (!booking) return fail(res, 404, "Booking not found");
     if (String(booking.customerId) !== req.user.id) {

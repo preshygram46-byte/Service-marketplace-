@@ -97,6 +97,72 @@ function renderList() {
           <div class="booking-ref-group">
             <span class="badge badge-${escapeHtml(status)}">${statusLabel(status)}</span>
             ${booking.id ? `<span class="ref-number">REF #${escapeHtml(booking.id)}</span>` : ''}
+  emptyState.classList.add("hidden");
+
+  stream.innerHTML = filtered
+    .map((booking) => {
+      const status =
+        booking.status || "pending";
+
+      const dateText =
+        booking.requestedDate
+          ? formatDate(booking.requestedDate)
+          : "-";
+
+      const timeText =
+        booking.requestedDate
+          ? formatTime(booking.requestedDate)
+          : "";
+
+      const priceText =
+        booking.price !== undefined &&
+        booking.price !== null
+          ? formatPrice(booking.price)
+          : "";
+
+      const title = escapeHtml(
+        booking.serviceTitle ||
+          "Service request"
+      );
+
+      const personName = canManageRequests
+        ? booking.customerName ||
+          "Customer"
+        : booking.providerName ||
+          "Provider";
+
+      const personLabel = canManageRequests
+        ? "Customer"
+        : "Provider";
+
+      const personLine = escapeHtml(
+        `${personLabel}: ${personName}`
+      );
+
+      const notes = booking.notes
+        ? escapeHtml(booking.notes)
+        : "";
+
+      return `
+        <article class="booking-card">
+          <div class="booking-card-ref">
+            <div class="booking-ref-group">
+              <span class="badge badge-${escapeHtml(
+                status
+              )}">
+                ${statusLabel(status)}
+              </span>
+
+              ${
+                booking.id
+                  ? `<span class="ref-number">
+                      REF #${escapeHtml(
+                        booking.id
+                      )}
+                    </span>`
+                  : ""
+              }
+            </div>
           </div>
         </div>
         <div class="booking-card-main">

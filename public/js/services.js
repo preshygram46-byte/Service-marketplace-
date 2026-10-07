@@ -108,6 +108,15 @@ function renderGrid(services) {
     const reviewCount = Number(service.reviewCount || 0);
     const ratingLine = reviewCount
       ? `<span class="rating-pill" aria-label="${rating.toFixed(1)} out of 5 from ${reviewCount} reviews">★ ${rating.toFixed(1)} <span>(${reviewCount})</span></span>`
+  grid.innerHTML = services.map((s, index) => {
+    const categoryName = escapeHtml(s.categoryName || '');
+    const imgSrc = s.image || 'images/header-visual.png';
+    const priceText = formatPrice(s.price);
+    const priceLine = priceText
+      ? `<div class="card-price"><span class="starting-from-label">Starting from</span>${priceText}</div>`
+      : '<div class="card-price"><span class="starting-from-label">Pricing on request</span></div>';
+    const providerLine = s.providerName
+      ? `<span class="card-provider-name">${escapeHtml(s.providerName)}</span>`
       : '';
 
     return `
@@ -128,6 +137,22 @@ function renderGrid(services) {
             <div class="card-price">${priceText ? `<span class="starting-from-label">Starting from</span>${priceText}` : '<span class="starting-from-label">Pricing on request</span>'}</div>
             <a href="service-detail.html?id=${encodeURIComponent(service.id)}" class="btn btn-primary">View Details</a>
           </div>
+    <article class="catalog-card ${featuredClass}">
+      <div class="card-img-wrap">
+        <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(s.title || 'Service')}" class="card-img">
+        ${categoryName ? `<span class="card-category-badge">${categoryName}</span>` : ''}
+      </div>
+      <div class="card-content">
+        <div class="card-provider-primary">
+          <span class="material-symbols-outlined icon-sm">person</span>
+          ${providerLine}
+          ${ratingLine}
+        </div>
+        <h3>${escapeHtml(s.title || 'Untitled service')}</h3>
+        <p class="card-description">${escapeHtml(s.description || '')}</p>
+        <div class="card-footer">
+          ${priceLine}
+          <a href="service-detail.html?id=${encodeURIComponent(s.id)}" class="btn btn-primary">View Details</a>
         </div>
       </article>
     `;
