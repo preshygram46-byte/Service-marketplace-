@@ -212,10 +212,27 @@ document.getElementById('confirm-cancel-btn')?.addEventListener('click', async (
 reviewForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!bookingToReview) return;
+  if (!reviewForm.checkValidity()) {
+    reviewForm.reportValidity();
+    return;
+  }
+  const rating = Number(reviewRating.value);
+  const comment = reviewComment.value.trim();
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    reviewRating.setCustomValidity('Choose a rating from 1 to 5.');
+    reviewForm.reportValidity();
+    reviewRating.setCustomValidity('');
+    return;
+  }
+  if (comment.length > 1000) {
+    showToast('Review comments must be 1000 characters or fewer.', true);
+    reviewComment.focus();
+    return;
+  }
   const button = reviewForm.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
-    await api.createReview({ bookingId: bookingToReview.id, rating: reviewRating.value, comment: reviewComment.value.trim() });
+    await api.createReview({ bookingId: bookingToReview.id, rating, comment });
     reviewModal.classList.remove('open');
     showToast('Review submitted successfully.');
     await loadBookings();

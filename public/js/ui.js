@@ -55,7 +55,6 @@ function renderUserCorner(user) {
   const userCorner = document.querySelector('.user-corner');
   if (!userCorner) return;
   if (user) {
-    const initial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
     userCorner.innerHTML = `
       <div class="user-info">
         <a href="account.html" class="user-account-link" aria-label="View profile">
@@ -103,6 +102,8 @@ export function initializeShell() {
   const mainNav = document.querySelector('nav.main-nav');
   const navBackdrop = document.querySelector('.nav-backdrop');
 
+  let lastFocusedMenuButton = null;
+
   function setNavOpen(open) {
     menuBtns.forEach((button) => {
       button.classList.toggle('is-open', open);
@@ -111,7 +112,14 @@ export function initializeShell() {
     mainNav?.classList.toggle('is-open', open);
     navBackdrop?.classList.toggle('is-open', open);
     navBackdrop?.setAttribute('aria-hidden', String(!open));
+    mainNav?.setAttribute('aria-hidden', String(!open));
     body.classList.toggle('nav-open', open);
+    if (open) {
+      lastFocusedMenuButton = document.activeElement;
+      mainNav?.querySelector('a')?.focus();
+    } else if (lastFocusedMenuButton instanceof HTMLElement) {
+      lastFocusedMenuButton.focus();
+    }
   }
 
   menuBtns.forEach((button) => button.addEventListener('click', () => setNavOpen(!(mainNav?.classList.contains('is-open')))));

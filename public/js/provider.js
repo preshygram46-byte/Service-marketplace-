@@ -141,7 +141,7 @@ async function loadServices() {
       </article>
     `).join('');
     servicesStream.querySelectorAll('img').forEach((img) => setImageFallback(img));
-    attachServiceListeners();
+    attachServiceListeners(services);
   } catch (err) {
     servicesStream.innerHTML = '';
     showError(servicesStream, err.message || 'Could not load your services', { ctaText: 'Retry', onCta: loadServices });
@@ -169,8 +169,7 @@ function closeServiceModal() {
   serviceModal?.classList.remove('open');
 }
 
-async function attachServiceListeners() {
-  const services = await api.getServices({ provider: user.id, limit: 100 }).catch(() => []);
+function attachServiceListeners(services) {
   document.querySelectorAll('.edit-service-btn').forEach((button) => {
     button.addEventListener('click', () => {
       const service = services.find((item) => String(item.id) === String(button.dataset.id));
@@ -207,8 +206,28 @@ document.getElementById('provider-service-form')?.addEventListener('submit', asy
     price: Number(servicePriceInput.value),
     description: serviceDescriptionInput.value.trim(),
   };
-  if (!payload.title || !payload.categoryId || !payload.description || !Number.isFinite(payload.price) || payload.price < 0) {
-    showToast('Complete all service fields with a valid price.', true);
+  if (!serviceForm.checkValidity()) {
+    serviceForm.reportValidity();
+    return;
+  }
+  if (payload.title.length < 2 || payload.title.length > 120) {
+    showToast('Service title must be between 2 and 120 characters.', true);
+    serviceTitleInput.focus();
+    return;
+  }
+  if (!payload.categoryId) {
+    showToast('Select a service category.', true);
+    serviceCategoryInput.focus();
+    return;
+  }
+  if (!Number.isFinite(payload.price) || payload.price < 0) {
+    showToast('Enter a valid service price of 0 or more.', true);
+    servicePriceInput.focus();
+    return;
+  }
+  if (payload.description.length < 10 || payload.description.length > 2000) {
+    showToast('Description must be between 10 and 2000 characters.', true);
+    serviceDescriptionInput.focus();
     return;
   }
   button.disabled = true;

@@ -115,17 +115,6 @@ section {
   padding: 80px 0;
 }
 
-.section-label {
-  font-family: var(--font-body);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  font-weight: 700;
-  margin-bottom: 16px;
-  display: block;
-}
-
 .section-header {
   display: flex;
   justify-content: space-between;

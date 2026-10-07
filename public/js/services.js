@@ -42,8 +42,7 @@ function getSort() {
 }
 
 async function getRatingStats(services) {
-  const ratingNeeded = getSort() === 'rating';
-  if (!ratingNeeded && services.length > 12) return services;
+  if (getSort() !== 'rating') return services;
 
   const results = await Promise.all(services.map(async (service) => {
     if (!service.id) return service;

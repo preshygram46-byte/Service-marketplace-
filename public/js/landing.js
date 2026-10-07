@@ -1,5 +1,5 @@
 import { api } from './api.js';
-import { escapeHtml, formatPrice, categoryIcon, serviceImageUrl, setImageFallback } from './utils.js';
+import { escapeHtml, formatPrice, categoryIcon } from './utils.js';
 
 function renderSkeletons() {
   const catGrid = document.getElementById('landing-categories');
@@ -37,7 +37,7 @@ async function loadRecentServices() {
   const grid = document.getElementById('landing-providers');
   if (!grid) return;
   try {
-    const services = await api.getServices({ limit: 6 });
+    const services = await api.getServices();
     const recent = services.slice(0, 3);
     if (!recent.length) {
       grid.innerHTML = '<p class="empty-message">No services listed yet.</p>';
@@ -48,11 +48,10 @@ async function loadRecentServices() {
       const provider = escapeHtml(service.providerName || 'Provider');
       const title = escapeHtml(service.title || 'Untitled service');
       const category = escapeHtml(service.categoryName || 'Service');
-      const image = serviceImageUrl(service, 900, 600);
       return `
         <article class="provider-card">
           <div class="provider-header">
-            <img class="provider-avatar-lg" src="${escapeHtml(image)}" alt="${title}" loading="lazy">
+            <img class="provider-avatar-lg" src="images/avatar.png" alt="" loading="lazy">
             <div class="provider-name-group">
               <h3>${title}</h3>
               <div class="provider-meta">
@@ -70,7 +69,6 @@ async function loadRecentServices() {
         </article>
       `;
     }).join('');
-    grid.querySelectorAll('img').forEach((img) => setImageFallback(img));
   } catch {
     grid.innerHTML = '<p class="empty-message">Couldn\'t load services.</p>';
   }

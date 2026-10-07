@@ -179,6 +179,22 @@ modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); 
 bookingForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!serviceId) return;
+  if (!bookingForm.checkValidity()) {
+    bookingForm.reportValidity();
+    return;
+  }
+  const selectedDate = new Date(`${bookDate.value}T${bookTime.value}`);
+  if (Number.isNaN(selectedDate.getTime()) || selectedDate <= new Date()) {
+    bookDate.setCustomValidity('Choose a future date and time.');
+    bookingForm.reportValidity();
+    bookDate.setCustomValidity('');
+    return;
+  }
+  if (bookNotes.value.trim().length > 1000) {
+    showToast('Project notes must be 1000 characters or fewer.', true);
+    bookNotes.focus();
+    return;
+  }
   const requestedDate = combineDateTime(bookDate.value, bookTime.value);
   if (!requestedDate) {
     showToast('Please select a valid date and time.', true);

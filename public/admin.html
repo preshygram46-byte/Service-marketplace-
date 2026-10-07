@@ -180,6 +180,8 @@
               id="admin-name"
               name="name"
               type="text"
+              minlength="2"
+              maxlength="100"
               autocomplete="name"
               required
             >
@@ -191,6 +193,7 @@
               id="admin-email"
               name="email"
               type="email"
+              maxlength="160"
               autocomplete="email"
               required
             >
@@ -202,6 +205,7 @@
               id="admin-phone"
               name="phone"
               type="tel"
+              maxlength="20"
               autocomplete="tel"
             >
           </div>
@@ -214,6 +218,7 @@
               id="admin-password"
               name="password"
               type="password"
+              maxlength="128"
               minlength="6"
               autocomplete="new-password"
               required
@@ -255,6 +260,8 @@
               id="service-title"
               name="title"
               type="text"
+              minlength="2"
+              maxlength="120"
               placeholder="e.g. Frontend Development"
               required
             >
@@ -296,6 +303,8 @@
             <textarea
               id="service-description"
               name="description"
+              minlength="10"
+              maxlength="2000"
               rows="4"
               required
             ></textarea>
@@ -335,6 +344,8 @@
               id="category-name"
               name="name"
               type="text"
+              minlength="2"
+              maxlength="100"
               placeholder="e.g. Web Development"
               required
             >
@@ -455,10 +466,10 @@
       <form id="edit-service-form">
         <input type="hidden" id="edit-service-id">
         <div class="modal-body modal-body-stack">
-          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-title">Service title</label><input class="form-input" id="edit-service-title" required></div>
+          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-title">Service title</label><input class="form-input" id="edit-service-title" minlength="2" maxlength="120" required></div>
           <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-category">Category</label><select class="form-select" id="edit-service-category" required></select></div>
           <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-price">Starting price</label><input class="form-input" id="edit-service-price" type="number" min="0" step="0.01" required></div>
-          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-description">Description</label><textarea class="form-textarea" id="edit-service-description" rows="5" required></textarea></div>
+          <div class="form-group form-group-stacked"><label class="form-label" for="edit-service-description">Description</label><textarea class="form-textarea" id="edit-service-description" minlength="10" maxlength="2000" rows="5" required></textarea></div>
         </div>
         <div class="modal-footer"><button type="submit" class="btn btn-primary">Save Changes</button></div>
       </form>
