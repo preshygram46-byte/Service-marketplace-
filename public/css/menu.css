@@ -1,16 +1,11 @@
-
-
-
-
 .nav-drawer-footer {
   display: none;
 }
 
 .menu {
   position: relative;
-  z-index: 1200;             
+  z-index: 1200;
 }
-
 
 .menu .hamburger-bars {
   position: relative;
@@ -34,10 +29,16 @@
     width 0.3s ease;
 }
 
-.menu .hamburger-bars span:nth-child(1) { top: 0; }
-.menu .hamburger-bars span:nth-child(2) { top: 7px;  width: 70%; }
-.menu .hamburger-bars span:nth-child(3) { top: 14px; }
-
+.menu .hamburger-bars span:nth-child(1) {
+  top: 0;
+}
+.menu .hamburger-bars span:nth-child(2) {
+  top: 7px;
+  width: 70%;
+}
+.menu .hamburger-bars span:nth-child(3) {
+  top: 14px;
+}
 
 .menu.is-open .hamburger-bars span:nth-child(1) {
   top: 7px;
@@ -52,19 +53,16 @@
   transform: rotate(-45deg);
 }
 
-
 .menu .material-symbols-outlined {
   font-size: 24px;
   line-height: 1;
 }
-
 
 .nav-backdrop {
   display: none;
 }
 
 @media (max-width: 768px) {
-  
   .header-actions {
     gap: 8px;
   }
@@ -72,7 +70,7 @@
   nav.main-nav {
     position: fixed;
     top: 0;
-    right: 0;                 
+    right: 0;
     width: min(86vw, 360px);
     height: 100vh;
     background: var(--card-bg);
@@ -83,7 +81,7 @@
     justify-content: center;
     gap: 28px;
     padding: 80px 32px 32px;
-    z-index: 1100;            
+    z-index: 1100;
     transform: translateX(100%);
     transition: transform var(--transition-med);
     box-shadow: -20px 0 60px rgba(0, 0, 0, 0.15);
@@ -116,10 +114,9 @@
     color: #000000;
   }
 
-  
   .nav-drawer-footer {
     margin-top: auto;
-    padding-top: 24px;
+    padding: 24px 0;
     border-top: 1px solid var(--bg-surface);
     width: 100%;
     display: flex;
@@ -127,7 +124,6 @@
     gap: 8px;
   }
 
-  
   .nav-backdrop {
     position: fixed;
     top: 0;
@@ -142,11 +138,10 @@
   }
 
   .nav-backdrop.is-open {
-    display: block;
+    display: flex;
     opacity: 1;
   }
 }
-
 
 .mobile-nav-close {
   display: none !important;
@@ -161,16 +156,11 @@
 @media (max-width: 768px) {
   nav.main-nav {
     gap: 10px;
-    justify-content: flex-start;
     padding: 84px 20px 24px;
   }
 
   nav.main-nav a {
     font-size: clamp(18px, 5vw, 20px);
     padding: 12px 14px;
-  }
-
-  .nav-drawer-footer {
-    margin-top: 20px;
   }
 }
