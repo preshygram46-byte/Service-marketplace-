@@ -1,12 +1,6 @@
 import { api } from './api.js';
 import { showToast } from './ui.js';
-import {
-  requireAuth,
-  formatDate,
-  escapeHtml,
-  showLoading,
-  showError
-} from './utils.js';
+import { requireAuth, formatDate } from './utils.js';
 
 const user = requireAuth('account.html');
 
@@ -16,42 +10,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   await renderBookingSummary(user);
 });
 
-function renderProfileHeader(user) {
-  const initial = (user.name || 'U').charAt(0).toUpperCase();
-  document.getElementById('profile-avatar').textContent = initial;
-  document.getElementById('profile-name').textContent = user.name || 'User';
-  document.getElementById('profile-email').textContent = user.email || '-';
-  const roleBadge = document.getElementById('profile-role');
-  roleBadge.textContent = (user.role || 'customer').charAt(0).toUpperCase() + (user.role || 'customer').slice(1);
+function renderProfileHeader(currentUser) {
+  const profileAvatar = document.getElementById('profile-avatar');
+  if (profileAvatar) {
+    profileAvatar.innerHTML = '<img src="images/avatar.png" alt="Profile Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+  }
+  document.getElementById('profile-name').textContent = currentUser.name || 'User';
+  document.getElementById('profile-email').textContent = currentUser.email || '-';
+  const role = currentUser.role || 'customer';
+  document.getElementById('profile-role').textContent = role.charAt(0).toUpperCase() + role.slice(1);
 
   const nameRead = document.getElementById('profile-name-read');
-  if (nameRead) nameRead.textContent = user.name || '-';
+  if (nameRead) nameRead.textContent = currentUser.name || '-';
   const emailRead = document.getElementById('profile-email-read');
-  if (emailRead) emailRead.textContent = user.email || '-';
+  if (emailRead) emailRead.textContent = currentUser.email || '-';
   const phoneEl = document.getElementById('profile-phone');
-  if (phoneEl) phoneEl.textContent = user.phone || '-';
+  if (phoneEl) phoneEl.textContent = currentUser.phone || '-';
   const roleRead = document.getElementById('profile-role-read');
-  if (roleRead) roleRead.textContent = (user.role || 'customer').charAt(0).toUpperCase() + (user.role || 'customer').slice(1);
+  if (roleRead) roleRead.textContent = role.charAt(0).toUpperCase() + role.slice(1);
   const joinedEl = document.getElementById('profile-joined');
-  if (joinedEl) joinedEl.textContent = user.joinedAt || user.createdAt ? formatDate(user.joinedAt || user.createdAt) : '-';
+  if (joinedEl) joinedEl.textContent = currentUser.createdAt ? formatDate(currentUser.createdAt) : '-';
 }
 
-async function renderBookingSummary(user) {
+async function renderBookingSummary(currentUser) {
   const statTotal = document.getElementById('stat-total');
   const statCompleted = document.getElementById('stat-completed');
   const statPending = document.getElementById('stat-pending');
 
   try {
     const bookings = await api.getBookings();
-    const filtered = bookings.filter(b => {
-      if (user.role === 'provider' || user.role === 'admin') return b.providerId === user.id;
-      return b.customerId === user.id || b.customerName === user.name;
-    });
-    const completed = filtered.filter(b => b.status === 'completed').length;
-    const pending = filtered.filter(b => b.status === 'pending').length;
+    const filtered = currentUser.role === 'admin'
+      ? bookings
+      : currentUser.role === 'provider'
+        ? bookings.filter((booking) => String(booking.providerId) === String(currentUser.id))
+        : bookings.filter((booking) => String(booking.customerId) === String(currentUser.id));
     statTotal.textContent = filtered.length;
-    statCompleted.textContent = completed;
-    statPending.textContent = pending;
+    statCompleted.textContent = filtered.filter((booking) => booking.status === 'completed').length;
+    statPending.textContent = filtered.filter((booking) => booking.status === 'pending').length;
   } catch (err) {
     statTotal.textContent = '0';
     statCompleted.textContent = '0';

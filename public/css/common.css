@@ -1051,3 +1051,78 @@ footer.main-footer .footer-legal a:hover {
     text-align: center;
   }
 }
+
+/* Frontend QA hardening */
+body.nav-open,
+body.modal-open,
+body.filters-open {
+  overflow: hidden;
+}
+
+.main-nav,
+.user-corner,
+.services-layout,
+.services-grid,
+.card-content,
+.card-footer,
+.provider-layout,
+.provider-service-card {
+  min-width: 0;
+}
+
+.icon-xs { font-size: 15px !important; line-height: 1; }
+.icon-sm { font-size: 18px !important; line-height: 1; }
+
+.card-category-badge {
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.form-group-stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.form-textarea { resize: vertical; }
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.optional-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+@media (max-width: 1100px) and (min-width: 769px) {
+  .main-nav { gap: 8px; }
+  .main-nav a { padding-inline: 8px; }
+  .user-corner .profile-btn,
+  .user-corner .logout-btn { display: none; }
+  .user-name { max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+  header .container { gap: 12px; }
+}
+
+@media (max-width: 480px) {
+  .toast { max-width: calc(100vw - 32px); padding: 12px 14px; }
+  .modal-backdrop { padding: 12px; }
+  .modal-box { max-height: calc(100vh - 24px); overflow-y: auto; }
+}

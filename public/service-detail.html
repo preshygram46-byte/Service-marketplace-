@@ -9,8 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bedtime,wb_sunny,close,menu,search,arrow_forward,filter_list,location_on,person,calendar_today,schedule,payments,tag,check_circle,error,done_all,star,warning,shield,cleaning_services,bolt,plumbing,school,spa,handyman,search_off,inbox,table_rows,lock,gavel,verified_user,password,badge,admin_panel_settings,trending_up,manage_accounts,mail,phone,save,visibility,visibility_off,arrow_back,expand_more,chevron_right,person_remove,person_add" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=category,bedtime,wb_sunny,close,menu,search,arrow_forward,filter_list,location_on,person,calendar_today,schedule,payments,tag,check_circle,error,done_all,star,warning,shield,cleaning_services,bolt,plumbing,school,spa,handyman,search_off,inbox,table_rows,lock,gavel,verified_user,password,badge,admin_panel_settings,trending_up,manage_accounts,mail,phone,save,visibility,visibility_off,arrow_back,expand_more,chevron_right,person_remove,person_add" />
 
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/menu.css">
@@ -25,7 +24,7 @@
         <span>Handled</span>
       </a>
 
-      <nav class="main-nav" aria-label="Primary"></nav>
+      <nav id="primary-nav" class="main-nav" aria-label="Primary"></nav>
       <div class="nav-backdrop" aria-hidden="true"></div>
 
       <div class="header-actions">
@@ -54,7 +53,7 @@
     <div class="detail-layout">
       
       <section class="detail-main">
-        <img id="detail-img" src="images/header-visual.png" alt="Service" class="detail-hero-img">
+        <img id="detail-img" src="images/service-fallback.png" alt="Service" class="detail-hero-img">
 
         <header class="detail-header">
           <h1 id="detail-title">Loading Service...</h1>
@@ -73,7 +72,7 @@
         <div class="detail-section">
           <h2>Meet Your Service Provider</h2>
           <div class="provider-block">
-            <img id="provider-avatar" src="images/favicon.svg" alt="Provider" class="provider-avatar-xl">
+            <div id="provider-avatar" class="provider-avatar-xl" aria-hidden="true">P</div>
             <div class="provider-info">
               <h3 id="provider-name">Provider Name</h3>
               <span id="provider-specialty" class="provider-specialty">Specialty</span>
@@ -81,6 +80,16 @@
             </div>
           </div>
         </div>
+
+        <section class="detail-section reviews-section" id="reviews-section">
+          <div class="reviews-heading">
+            <div>
+              <h2>Customer Reviews</h2>
+              <div id="review-summary" class="review-summary"><span>Loading reviews…</span></div>
+            </div>
+          </div>
+          <div id="reviews-list" class="reviews-list"></div>
+        </section>
       </section>
 
       
@@ -100,11 +109,11 @@
           <div class="panel-assurance">
             <div class="assurance-item">
               <span class="material-symbols-outlined">shield</span>
-              <p>You will not be charged yet (provider confirms first).</p>
+              <p>No payment is processed by this prototype.</p>
             </div>
             <div class="assurance-item">
               <span class="material-symbols-outlined">schedule</span>
-              <p>Flexible free cancellation up to 12 hours prior.</p>
+              <p>Requests can be cancelled while they are pending or accepted.</p>
             </div>
           </div>
         </div>

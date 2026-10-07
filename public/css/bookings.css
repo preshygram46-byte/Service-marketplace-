@@ -241,3 +241,19 @@ body.dark .star-btn {
 @media (max-width: 400px) {
   .bookings-header h1 { font-size: 22px; }
 }
+
+.review-modal-service {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.status-text { min-width: 0; }
+
+@media (max-width: 480px) {
+  .booking-card-main { padding: 18px; }
+  .booking-card-ref { padding-inline: 14px; }
+  .booking-ref-group { flex-wrap: wrap; }
+  .booking-actions .btn { width: 100%; min-width: 0; }
+}

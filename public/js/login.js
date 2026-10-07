@@ -1,5 +1,6 @@
 import { api } from './api.js';
 import { showToast } from './ui.js';
+import { safeInternalNext } from './utils.js';
 
 const loginTab = document.getElementById('tab-btn-login');
 const registerTab = document.getElementById('tab-btn-register');
@@ -40,7 +41,7 @@ function showError(msg) {
 
 function resolveRedirect(role) {
   const next = params.get('next');
-  if (next) return next;
+  if (next) return safeInternalNext(next, 'index.html');
   if (role === 'provider') return 'provider-dashboard.html';
   if (role === 'admin') return 'admin.html';
   return 'bookings.html';
@@ -48,9 +49,11 @@ function resolveRedirect(role) {
 
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const submitButton = loginForm.querySelector('button[type="submit"]');
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   if (!email || !password) return showError('Enter your email and password.');
+  submitButton.disabled = true;
   try {
     const res = await api.login({ email, password });
     showToast(res.message);
@@ -58,11 +61,13 @@ loginForm.addEventListener('submit', async (e) => {
     setTimeout(() => { window.location.href = redirect; }, 600);
   } catch (err) {
     showError(err.message);
+    submitButton.disabled = false;
   }
 });
 
 registerForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const submitButton = registerForm.querySelector('button[type="submit"]');
   const name = document.getElementById('reg-name').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const phone = document.getElementById('reg-phone').value.trim();
@@ -70,6 +75,7 @@ registerForm.addEventListener('submit', async (e) => {
   const role = document.getElementById('register-role').value;
   if (!name || !email || !password) return showError('Name, email, and password are required.');
   if (password.length < 6) return showError('Password must be at least 6 characters.');
+  submitButton.disabled = true;
   try {
     const res = await api.register({ name, email, phone, password, role });
     showToast(res.message);
@@ -77,5 +83,6 @@ registerForm.addEventListener('submit', async (e) => {
     setTimeout(() => { window.location.href = redirect; }, 600);
   } catch (err) {
     showError(err.message);
+    submitButton.disabled = false;
   }
 });
