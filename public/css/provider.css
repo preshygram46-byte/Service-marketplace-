@@ -228,3 +228,43 @@
   .provider-service-image { height: 180px; min-height: 0; }
   .provider-service-actions .btn { flex: 1 1 120px; }
 }
+
+.provider-request-card,
+.request-main,
+.request-actions,
+.provider-service-card,
+.provider-service-content {
+  min-width: 0;
+}
+
+.request-price {
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .provider-page {
+    padding-top: 32px;
+  }
+
+  .provider-request-card {
+    padding: 18px 16px;
+  }
+
+  .request-meta {
+    gap: 10px 14px;
+  }
+
+  .request-price {
+    flex-wrap: wrap;
+  }
+
+  .request-actions {
+    width: 100%;
+  }
+
+  .request-actions .btn,
+  .request-actions .status-text {
+    width: 100%;
+    justify-content: center;
+  }
+}

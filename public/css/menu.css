@@ -151,3 +151,26 @@
 .mobile-nav-close {
   display: none !important;
 }
+
+@media (min-width: 769px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  nav.main-nav {
+    gap: 10px;
+    justify-content: flex-start;
+    padding: 84px 20px 24px;
+  }
+
+  nav.main-nav a {
+    font-size: clamp(18px, 5vw, 20px);
+    padding: 12px 14px;
+  }
+
+  .nav-drawer-footer {
+    margin-top: 20px;
+  }
+}

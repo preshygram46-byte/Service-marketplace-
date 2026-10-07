@@ -53,6 +53,7 @@ loginForm.addEventListener('submit', async (e) => {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   if (!email || !password) return showError('Enter your email and password.');
+  if (!loginForm.checkValidity()) { loginForm.reportValidity(); return; }
   submitButton.disabled = true;
   try {
     const res = await api.login({ email, password });
@@ -74,7 +75,10 @@ registerForm.addEventListener('submit', async (e) => {
   const password = document.getElementById('reg-password').value;
   const role = document.getElementById('register-role').value;
   if (!name || !email || !password) return showError('Name, email, and password are required.');
+  if (name.length < 2) return showError('Enter your full name.');
+  if (!registerForm.checkValidity()) { registerForm.reportValidity(); return; }
   if (password.length < 6) return showError('Password must be at least 6 characters.');
+  if (phone && !/^[+\d][\d\s().-]{6,19}$/.test(phone)) return showError('Enter a valid phone number.');
   submitButton.disabled = true;
   try {
     const res = await api.register({ name, email, phone, password, role });

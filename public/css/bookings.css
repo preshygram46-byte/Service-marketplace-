@@ -257,3 +257,54 @@ body.dark .star-btn {
   .booking-ref-group { flex-wrap: wrap; }
   .booking-actions .btn { width: 100%; min-width: 0; }
 }
+
+.booking-card,
+.booking-card-ref,
+.booking-card-main,
+.booking-ref-group,
+.booking-info,
+.booking-actions {
+  min-width: 0;
+}
+
+.ref-number {
+  overflow-wrap: anywhere;
+}
+
+.booking-card-ref {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  .bookings-page {
+    padding-top: 32px;
+  }
+
+  .bookings-header h1 {
+    font-size: clamp(28px, 9vw, 36px);
+  }
+
+  .status-tabs-strip {
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .booking-card-main {
+    padding: 18px 16px;
+  }
+
+  .booking-info h2 {
+    font-size: clamp(20px, 6vw, 24px);
+  }
+
+  .booking-actions {
+    width: 100%;
+  }
+
+  .booking-actions .btn,
+  .booking-actions .status-text {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -142,24 +142,12 @@ export function categoryIcon(categoryName = '') {
   return 'category';
 }
 
-function hashString(value) {
-  let hash = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    hash = ((hash << 5) - hash + value.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash);
-}
-
-export function serviceImageUrl(service, width = 1000, height = 700) {
+export function serviceImageUrl(service) {
   if (service?.image) return service.image;
-  const title = String(service?.title || 'local professional service').trim();
-  const category = String(service?.categoryName || '').trim();
-  const query = [title, category, 'professional service'].filter(Boolean).join(' ');
-  const lock = (hashString(query) % 999) + 1;
-  return `https://loremflickr.com/${width}/${height}/${encodeURIComponent(query)}?lock=${lock}`;
+  return 'images/service-fallback.webp';
 }
 
-export function setImageFallback(img, fallback = 'images/service-fallback.png') {
+export function setImageFallback(img, fallback = 'images/service-fallback.webp') {
   if (!img) return;
   img.addEventListener('error', () => {
     if (img.dataset.fallbackApplied === 'true') return;
