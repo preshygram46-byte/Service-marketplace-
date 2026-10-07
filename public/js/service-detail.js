@@ -57,11 +57,6 @@ function showMissingService() {
   reviewsSection?.classList.add('hidden');
 }
 
-function renderProviderInitial(name) {
-  const value = String(name || 'Provider').trim();
-  return value.charAt(0).toUpperCase() || 'P';
-}
-
 async function loadReviews() {
   if (!serviceId || !reviewsSection) return;
   try {
@@ -111,11 +106,6 @@ async function loadService() {
     breadcrumbCat.textContent = categoryName;
     if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
 
-    detailDescription.textContent = currentService.description || '';
-    const categoryName = currentService.categoryName || 'Service';
-
-    breadcrumbCat.textContent = categoryName;
-    if (detailCategoryBadge) detailCategoryBadge.textContent = categoryName;
     if (detailImg) {
       detailImg.src = serviceImageUrl(currentService, 1200, 800);
       detailImg.alt = currentService.title || 'Service';
@@ -154,122 +144,44 @@ async function loadService() {
     }
 
     await loadReviews();
-    if (summaryPrice) summaryPrice.textContent = priceText || '-';
-    if (summaryUnit) summaryUnit.textContent = '';
-
-    if (panelPrice) panelPrice.textContent = priceText || '-';
-    if (panelUnit) panelUnit.textContent = '';
-    if (mobilePrice) mobilePrice.textContent = priceText || '-';
-    if (mobileUnit) mobileUnit.textContent = '';
-
-    if (providerName) {
-      if (currentService.providerName) {
-        providerName.textContent = currentService.providerName;
-        providerName.style.display = '';
-      } else {
-        providerName.style.display = 'none';
-      }
-    }
-
-    if (providerSpecialty) {
-      if (categoryName) {
-        providerSpecialty.textContent = `${categoryName} Specialist`;
-        providerSpecialty.style.display = '';
-      } else {
-        providerSpecialty.style.display = 'none';
-      }
-    }
-
-    if (providerResponse) {
-      if (currentService.responseTime) {
-        providerResponse.textContent = currentService.responseTime;
-        providerResponse.style.display = '';
-      } else {
-        providerResponse.style.display = 'none';
-      }
-    }
-
-    if (providerAvatar) {
-      providerAvatar.alt = currentService.providerName || 'Provider';
-    }
-
-    if (providerSkills) {
-      if (currentService.skills && currentService.skills.length > 0) {
-        providerSkills.innerHTML = currentService.skills.map(skill => `<span>${escapeHtml(skill)}</span>`).join('');
-        providerSkills.style.display = '';
-      } else {
-        providerSkills.style.display = 'none';
-      }
-    }
-  } catch (err) {
-    showToast(err.message || 'Could not load service.', true);
+  } catch (error) {
+    showToast(error.message || 'Could not load service details.', true);
     showMissingService();
   }
 }
 
-function setModalOpen(open, trigger = null) {
-  if (!modal) return;
-  if (open) {
-    lastFocusedElement = trigger || document.activeElement;
-    modal.classList.add('open');
-    document.body.classList.add('modal-open');
-    closeBtn?.focus();
-  } else {
-    modal.classList.remove('open');
-    document.body.classList.remove('modal-open');
-    lastFocusedElement?.focus?.();
-  }
-}
-
-function handleOpenModal(triggerSource, trigger) {
-  if (bookingSubmitted) {
-    showToast("You've already sent a request for this service. Check your bookings.");
-    return;
-  }
-  const currentUser = api.getUser();
-  if (currentUser?.id && currentService?.providerId && String(currentUser.id) === String(currentService.providerId)) {
-    showToast('You cannot book your own service.', true);
-    return;
-  }
+function openModal() {
   if (!api.getToken()) {
-    const next = encodeURIComponent(`service-detail.html?id=${serviceId}`);
-    const prompt = document.getElementById(triggerSource === 'desktop' ? 'guest-auth-prompt-desktop' : 'guest-auth-prompt-mobile');
-    if (prompt) {
-      prompt.querySelectorAll('a[href*="next="]').forEach((link) => {
-        link.href = `login.html?next=${next}`;
-      });
-      prompt.classList.remove('hidden');
-    }
+    const next = `${window.location.pathname.split('/').pop() || 'index.html'}${window.location.search || ''}`;
+    window.location.href = `login.html?next=${encodeURIComponent(next)}`;
     return;
   }
-  setModalOpen(true, trigger);
+  lastFocusedElement = document.activeElement;
+  modal?.classList.add('open');
+  if (bookDate && !bookDate.value) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    bookDate.value = localDateString(tomorrow);
+    bookDate.min = localDateString(new Date());
+  }
+  bookDate?.focus();
 }
 
-openBtns.forEach((btn) => {
-  btn?.addEventListener('click', () => handleOpenModal(btn.id.includes('mobile') ? 'mobile' : 'desktop', btn));
-});
+function closeModal() {
+  modal?.classList.remove('open');
+  lastFocusedElement?.focus();
+}
 
-closeBtn?.addEventListener('click', () => setModalOpen(false));
-modal?.addEventListener('click', (event) => {
-  if (event.target === modal) setModalOpen(false);
-});
+openBtns.forEach((btn) => btn?.addEventListener('click', openModal));
+closeBtn?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && modal?.classList.contains('open')) setModalOpen(false);
-});
-
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-bookDate.min = localDateString(tomorrow);
-bookDate.value = localDateString(tomorrow);
-
-bookingForm?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  if (bookingSubmitted || !currentService) return;
-
+bookingForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!serviceId) return;
   const requestedDate = combineDateTime(bookDate.value, bookTime.value);
-  if (!requestedDate || new Date(requestedDate) <= new Date()) {
-    showToast('Please choose a future date and time.', true);
+  if (!requestedDate) {
+    showToast('Please select a valid date and time.', true);
     return;
   }
 
@@ -277,22 +189,26 @@ bookingForm?.addEventListener('submit', async (event) => {
   submitBtn.textContent = 'Submitting Request...';
 
   try {
-    await api.createBooking({ serviceId: currentService.id, requestedDate, notes: bookNotes.value.trim() });
-    setModalOpen(false);
-    bookingSubmitted = true;
-    openBtns.forEach((btn) => {
-      if (!btn) return;
-      btn.textContent = 'Request Sent';
-      btn.disabled = true;
-      btn.setAttribute('aria-disabled', 'true');
+    const res = await api.createBooking({
+      serviceId,
+      requestedDate,
+      notes: bookNotes.value.trim(),
     });
-    showToast('Service request sent. The provider will review and respond shortly.');
-  } catch (err) {
-    showToast(err.message || 'Could not submit request.', true);
-  } finally {
+    bookingSubmitted = true;
+    showToast(res.message || 'Service request submitted successfully.');
+    closeModal();
+    setTimeout(() => {
+      window.location.href = 'bookings.html';
+    }, 800);
+  } catch (error) {
+    showToast(error.message || 'Could not submit service request.', true);
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Request Service';
+    submitBtn.textContent = 'Confirm Booking Request';
   }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal?.classList.contains('open')) closeModal();
 });
 
 loadService();
