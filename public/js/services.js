@@ -85,12 +85,12 @@ async function updateResults(showSkeleton = false) {
       ctaText: 'Retry',
       onCta: () => updateResults(true),
     });
-    countText.textContent = 'Unable to load services';
+    if (countText) countText.textContent = 'Unable to load services';
   }
 }
 
 function renderGrid(services) {
-  countText.textContent = `${services.length} ${services.length === 1 ? 'service' : 'services'} available`;
+  if (countText) countText.textContent = `${services.length} ${services.length === 1 ? 'service' : 'services'} available`;
 
   if (!services.length) {
     grid.innerHTML = '';
@@ -108,15 +108,6 @@ function renderGrid(services) {
     const reviewCount = Number(service.reviewCount || 0);
     const ratingLine = reviewCount
       ? `<span class="rating-pill" aria-label="${rating.toFixed(1)} out of 5 from ${reviewCount} reviews">★ ${rating.toFixed(1)} <span>(${reviewCount})</span></span>`
-  grid.innerHTML = services.map((s, index) => {
-    const categoryName = escapeHtml(s.categoryName || '');
-    const imgSrc = s.image || 'images/header-visual.png';
-    const priceText = formatPrice(s.price);
-    const priceLine = priceText
-      ? `<div class="card-price"><span class="starting-from-label">Starting from</span>${priceText}</div>`
-      : '<div class="card-price"><span class="starting-from-label">Pricing on request</span></div>';
-    const providerLine = s.providerName
-      ? `<span class="card-provider-name">${escapeHtml(s.providerName)}</span>`
       : '';
 
     return `
@@ -137,22 +128,6 @@ function renderGrid(services) {
             <div class="card-price">${priceText ? `<span class="starting-from-label">Starting from</span>${priceText}` : '<span class="starting-from-label">Pricing on request</span>'}</div>
             <a href="service-detail.html?id=${encodeURIComponent(service.id)}" class="btn btn-primary">View Details</a>
           </div>
-    <article class="catalog-card ${featuredClass}">
-      <div class="card-img-wrap">
-        <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(s.title || 'Service')}" class="card-img">
-        ${categoryName ? `<span class="card-category-badge">${categoryName}</span>` : ''}
-      </div>
-      <div class="card-content">
-        <div class="card-provider-primary">
-          <span class="material-symbols-outlined icon-sm">person</span>
-          ${providerLine}
-          ${ratingLine}
-        </div>
-        <h3>${escapeHtml(s.title || 'Untitled service')}</h3>
-        <p class="card-description">${escapeHtml(s.description || '')}</p>
-        <div class="card-footer">
-          ${priceLine}
-          <a href="service-detail.html?id=${encodeURIComponent(s.id)}" class="btn btn-primary">View Details</a>
         </div>
       </article>
     `;
@@ -198,57 +173,50 @@ async function initCategories() {
       radio.addEventListener('change', () => updateResults(true));
     });
   } catch {
-    categoryRadios.innerHTML = '<p class="empty-message">Categories unavailable.</p>';
+    categoryRadios.innerHTML = '<p class="empty-message">Could not load categories.</p>';
   }
 }
 
-function resetFilters({ resetSort = true } = {}) {
-  searchInput.value = '';
-  const allRadio = document.querySelector('input[name="cat"][value=""]');
-  if (allRadio) allRadio.checked = true;
-  if (resetSort) {
-    desktopSort.value = 'newest';
-    mobileSort.value = 'newest';
-  }
-  updateResults(true);
-}
-
-function setFilterDrawer(open) {
-  sidebar.classList.toggle('open', open);
-  backdrop.classList.toggle('active', open);
-  backdrop.setAttribute('aria-hidden', String(!open));
+function setFiltersOpen(open) {
+  sidebar?.classList.toggle('is-open', open);
+  backdrop?.classList.toggle('is-open', open);
+  backdrop?.setAttribute('aria-hidden', String(!open));
   document.body.classList.toggle('filters-open', open);
-  if (open) closeFiltersBtn?.focus();
 }
 
-const params = new URLSearchParams(window.location.search);
-if (params.get('q')) searchInput.value = params.get('q');
+openFiltersBtn?.addEventListener('click', () => setFiltersOpen(true));
+closeFiltersBtn?.addEventListener('click', () => setFiltersOpen(false));
+backdrop?.addEventListener('click', () => setFiltersOpen(false));
 
-desktopSort.addEventListener('change', () => {
-  mobileSort.value = desktopSort.value;
+resetBtn?.addEventListener('click', () => {
+  const allCatRadio = categoryRadios?.querySelector('input[name="cat"][value=""]');
+  if (allCatRadio) allCatRadio.checked = true;
+  searchInput.value = '';
+  desktopSort.value = 'newest';
+  mobileSort.value = 'newest';
+  setFiltersOpen(false);
   updateResults(true);
 });
 
-mobileSort.addEventListener('change', () => {
-  desktopSort.value = mobileSort.value;
+clearBtn?.addEventListener('click', () => {
+  const allCatRadio = categoryRadios?.querySelector('input[name="cat"][value=""]');
+  if (allCatRadio) allCatRadio.checked = true;
+  searchInput.value = '';
   updateResults(true);
 });
 
-searchInput.addEventListener('input', () => {
+searchInput?.addEventListener('input', () => {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => updateResults(true), 300);
+  searchTimer = setTimeout(() => updateResults(false), 300);
 });
 
-resetBtn.addEventListener('click', () => resetFilters());
-clearBtn.addEventListener('click', () => resetFilters());
-openFiltersBtn.addEventListener('click', () => setFilterDrawer(true));
-closeFiltersBtn.addEventListener('click', () => setFilterDrawer(false));
-backdrop.addEventListener('click', () => setFilterDrawer(false));
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && sidebar.classList.contains('open')) setFilterDrawer(false);
-});
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 1024 && sidebar.classList.contains('open')) setFilterDrawer(false);
+desktopSort?.addEventListener('change', () => updateResults(false));
+mobileSort?.addEventListener('change', () => {
+  desktopSort.value = mobileSort.value;
+  updateResults(false);
 });
 
-Promise.resolve(initCategories()).then(() => updateResults(true));
+document.addEventListener('DOMContentLoaded', async () => {
+  await initCategories();
+  await updateResults(true);
+});
